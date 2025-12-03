@@ -1,5 +1,5 @@
-from ..db.connection import conn
-from ..utils.uuidToString import uuid_str
+from db.connection import conn
+from utils.uuidToString import uuid_str
 
 
 # Lista aktorów głównych dla każdego filmu

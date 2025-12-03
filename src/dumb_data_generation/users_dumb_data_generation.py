@@ -1,7 +1,7 @@
-from ..utils.uuidToString import uuid_str
+from utils.uuidToString import uuid_str
 from datetime import date, timedelta
 import random
-from ..db.connection import conn
+from db.connection import conn
 
 # --- FUNKCJA DO GENEROWANIA ZAKRESU SUBSKRYBCJI NA 1 MIESIAC ---
 def daterange_one_month():

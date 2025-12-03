@@ -1,5 +1,5 @@
 import json
-from ..db.connection import conn
+from db.connection import conn
 
 
 # PRZYKŁADOWE FRAGMENTY NAPISÓW (JSON)

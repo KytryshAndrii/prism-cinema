@@ -1,5 +1,5 @@
-from ..db.connection import conn
-from ..utils.uuidToString import uuid_str
+from db.connection import conn
+from utils.uuidToString import uuid_str
 
 directors = [
     {"first_name": "Frank", "middle_name": "", "last_name": "Darabont", "birthplace": "Montbéliard, France"},

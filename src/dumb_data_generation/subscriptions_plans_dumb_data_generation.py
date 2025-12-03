@@ -1,5 +1,5 @@
-from ..db.connection import conn
-from ..utils.uuidToString import uuid_str
+from db.connection import conn
+from utils.uuidToString import uuid_str
 
 #Dodanie planów subskrypcji
 # --- Wygeneruj UUID dla dwóch planów ---
