@@ -1,28 +1,22 @@
-# insert_sample_data.py
-import psycopg2
-import uuid
-from datetime import date, timedelta
-import random
+from dumb_data_generation.actors_dumb_data_generation import insert_dumb_data_actors
+from dumb_data_generation.additional_movie_data_generation import insert_dumb_data_additional_movie_data
+from dumb_data_generation.directors_dumb_data_generation import insert_dumb_data_directors
+from dumb_data_generation.genres_dumb_data_generation import insert_dumb_data_genres
+from dumb_data_generation.licenses_dumb_data_generation import insert_dumb_data_licenses
+from dumb_data_generation.movie_localization_dumb_data_generation import insert_dumb_data_movie_localizations
+from dumb_data_generation.movies_dumb_data_generation import insert_dumb_data_movies
+from dumb_data_generation.subscriptions_plans_dumb_data_generation import insert_dumb_data_subscriptions_plans
+from dumb_data_generation.users_dumb_data_generation import insert_dumb_data_users_table
+from dumb_data_generation.join_tables_dumb_data_generation import insert_dumb_data_join_tables
 
-# Dane dostępowe do bazy
-conn = psycopg2.connect(
-    dbname="ks_bd",
-    user="postgres",
-    password="root",
-    host="localhost",
-    port="5432"
-)
+# insert_dumb_data_subscriptions_plans()
+# insert_dumb_data_users_table()
+# insert_dumb_data_movie_localizations()
+# insert_dumb_data_licenses()
+# insert_dumb_data_additional_movie_data()
+# insert_dumb_data_directors()
+# insert_dumb_data_actors()
+# insert_dumb_data_genres()
+# insert_dumb_data_movies()
 
-cur = conn.cursor()
-
-# --- FUNKCJA DO GENEROWANIA UUID JAKO STRING ---
-def uuid_str():
-    return str(uuid.uuid4())
-
-
-
-
-conn.commit()
-print("Przykładowe dane zostały dodane.")
-cur.close()
-conn.close()
+insert_dumb_data_join_tables()

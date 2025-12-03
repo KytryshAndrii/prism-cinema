@@ -1,21 +1,7 @@
-import psycopg2
-import uuid
+from ..utils.uuidToString import uuid_str
 from datetime import date, timedelta
 import random
-
-# Dane dostępowe do bazy
-conn = psycopg2.connect(
-    dbname="ks_bd",
-    user="postgres",
-    password="root",
-    host="localhost",
-    port="5432"
-)
-
-
-# --- FUNKCJA DO GENEROWANIA UUID JAKO STRING ---
-def uuid_str():
-    return str(uuid.uuid4())
+from ..db.connection import conn
 
 # --- FUNKCJA DO GENEROWANIA ZAKRESU SUBSKRYBCJI NA 1 MIESIAC ---
 def daterange_one_month():
