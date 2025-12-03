@@ -67,7 +67,7 @@ def insert_dumb_data_users_table():
             cur.execute("""
                    INSERT INTO "USERS" (
                        user_id, user_login, user_password, user_mail,
-                       user_is_subscripted, user_subscription_plan_id,
+                       user_is_subscribed, user_subscription_plan_id,
                        user_subscription_period, user_is_admin, user_location_region,
                        user_date_of_birth
                    )
@@ -80,7 +80,7 @@ def insert_dumb_data_users_table():
             cur.execute("""
                 INSERT INTO "USERS" (
                     user_id, user_login, user_password, user_mail,
-                    user_is_subscripted, user_subscription_plan_id,
+                    user_is_subscribed, user_subscription_plan_id,
                     user_subscription_period, user_is_admin, user_location_region,
                     user_date_of_birth
                 )

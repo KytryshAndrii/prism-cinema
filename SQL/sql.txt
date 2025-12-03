@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS public."USERS"
     user_login character varying(16) NOT NULL,
     user_password character varying(255) COLLATE pg_catalog."default" NOT NULL,
     user_mail character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    user_is_subscripted boolean NOT NULL,
+    user_is_subscribed boolean NOT NULL,
     user_subscription_plan_id uuid,
     user_subscription_period daterange,
     user_is_admin boolean NOT NULL,

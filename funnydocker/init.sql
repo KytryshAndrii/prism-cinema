@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS public."USERS"
     user_login text NOT NULL,
     user_password text NOT NULL,
     user_mail text NOT NULL,
-    user_is_subscripted boolean NOT NULL,
+    user_is_subscribed boolean NOT NULL,
     user_subscription_period daterange,
     user_is_admin boolean NOT NULL,
     PRIMARY KEY (user_id)
