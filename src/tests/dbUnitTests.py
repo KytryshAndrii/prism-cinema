@@ -238,6 +238,85 @@ class TestDatabaseQueries(unittest.TestCase):
     #
     #     self.conn.rollback()
 
+        # ------------------------- TESTY INDEKSÓW -------------------------
+
+    def test_index_exists(self):
+        """Czy wszystkie wymagane indeksy istnieją w bazie danych."""
+
+        expected_indexes = [
+            # ACTORS
+            'actors_index',
+            'actor_first_last_name_index',
+            'ACTORS_pkey',
+            'actor_birth_place_index',
+
+            # ADDITIONAL_MOVIE_DATA
+            'additional_movie_data_movie_id_index',
+            'additional_movie_data_language_index',
+
+            # DIRECTORS
+            'DIRECTORS_pkey',
+            'directors_index',
+            'director_birth_place_index',
+            'director_first_last_name_index',
+
+            # FAVOURITE_MOVIES
+            'fav_movies_index',
+
+            # GENRES
+            'GENRES_pkey',
+            'genres_index',
+            'genres_name_index',
+
+            # LICENSES
+            'LICENSES_pkey',
+            'license_index',
+
+            # MOVIES
+            'MOVIES_pkey',
+            'movie_pg_index',
+            'movies_index',
+            'movie_rating_index',
+
+            # MOVIE_ACTORS
+            'actors_movie_index',
+            'movie_actor_index',
+
+            # MOVIE_DIRECTORS
+            'director_movie_index',
+            'movie_directors_index',
+
+            # MOVIE_GENRES
+            'genre_movie_index',
+            'movie_genres_index',
+
+            # MOVIE_LICENSES
+            'movie_license_index',
+
+            # MOVIE_LOCALIZATIONS
+            'movie_localization_language_index',
+            'movie_localization_id_index',
+
+            # SERVICE_SUBSCRIPTION_PLANS
+            'SERVICE_SUBSCRIPTION_PLANS_pkey',
+
+            # USERS
+            'USERS_pkey',
+            'user_index',
+            'user_password_mail_index',
+        ]
+
+        self.cur.execute("""
+            SELECT indexname
+            FROM pg_indexes
+            WHERE schemaname = 'public';
+        """)
+        indexes = [row[0] for row in self.cur.fetchall()]
+
+        for expected in expected_indexes:
+            with self.subTest(index=expected):
+                self.assertIn(expected, indexes)
+
     # ------------------------- KONIEC TESTÓW -------------------------
 
 
