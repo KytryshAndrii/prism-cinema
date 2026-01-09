@@ -13,12 +13,19 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
     "@reduxjs/toolkit": "^2.11.2",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/three": "^0.182.0",
+    "gsap": "^3.14.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.70.0",
     "react-redux": "^9.2.0",
+    "react-router-dom": "^6.30.3",
+    "tailwindcss": "^4.1.18",
+    "three": "^0.182.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
