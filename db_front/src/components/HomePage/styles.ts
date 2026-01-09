@@ -17,7 +17,7 @@ export const ImageBox = styled(Box)({
   position: 'relative',
   width: '80%',
   maxWidth: '50rem',
-  borderRadius: '1rem',
+  borderRadius: '2rem',
   boxShadow: '0 1rem 2rem rgba(0, 0, 0, 0.4)',
 });
 
