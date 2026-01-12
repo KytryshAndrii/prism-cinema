@@ -13,7 +13,7 @@ export const Container = styled(Box)({
 });
 
 export const Heading = styled('h2')({
-  fontSize: '2rem',
+  fontSize: '1.7rem',
   padding: '1rem',
   fontWeight: 'bold',
   backgroundColor: 'transparent',

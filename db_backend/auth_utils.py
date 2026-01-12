@@ -5,7 +5,7 @@ import os
 JWT_SECRET = os.getenv("JWT_SECRET_KEY", "fallback_secret")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 
-def generate_token(user_id: str, expires_in=11600):
+def generate_token(user_id: str, expires_in=21600):
     payload = {
         "user_id": user_id,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in),

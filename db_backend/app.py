@@ -1,21 +1,25 @@
 import bcrypt
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+from flask_cors import cross_origin
 from db.connection import get_connection
 import uuid
-import secrets
+import base64
 
 from db_backend.auth_utils import generate_token
 from db_backend.token_validation import token_required
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Endpoint testowy /health
 @app.route("/health", methods=["GET"])
 def health():
     return {"status": "ok"}
 
-@app.route('/register', methods=['GET'])
+@app.route('/register', methods=['POST'])
+@cross_origin()
 def register_user():
     data = request.get_json()
     login = data.get("login")
@@ -64,7 +68,8 @@ def register_user():
         "token": token
     }), 200
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
+@cross_origin()
 def login_user():
     data = request.get_json()
     login = data.get("login")
@@ -143,28 +148,118 @@ def get_movies():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT
-           *
-        FROM "MOVIES"
-        LIMIT 50
-    """)
+           SELECT
+               m.movie_id,
+               m.movie_name,
+               amd.movie_poster,
+               amd.movie_preview_poster
+           FROM "MOVIES" m
+           LEFT JOIN "ADDITIONAL_MOVIE_DATA" amd
+               ON amd.movie_id = m.movie_id
+           LIMIT 50
+       """)
 
     rows = cur.fetchall()
     cur.close()
     conn.close()
+    movies = []
 
-    users = []
     for row in rows:
-        users.append({
-            "movie_id": str(row[0]),                   # UUID → string
-            "movie_name": row[1],
-            "movie_rating": row[2],
-            "movie_release_date": row[3],
-            "movie_pg": row[4],
-            "movie_description": row[5],
+        movie_id = row[0]
+        movie_name = row[1]
+        poster_bytes = row[2]
+        preview_poster_bytes = row[3]
+
+        # BYTEA -> base64 (lub None)
+        poster_base64 = (
+            base64.b64encode(poster_bytes).decode("utf-8")
+            if poster_bytes
+            else None
+        )
+
+        preview_poster_base64 = (
+            base64.b64encode(preview_poster_bytes).decode("utf-8")
+            if poster_bytes
+            else None
+        )
+
+        movies.append({
+            "movie_id": str(movie_id),
+            "movie_name": movie_name,
+            "movie_poster": poster_base64,
+            "movie_preview_poster": preview_poster_base64
         })
 
-    return jsonify(users)
+    return jsonify(movies), 200
+
+@app.route("/movie_details/<uuid:movie_id>", methods=["GET"])
+@token_required
+def get_movie_details(movie_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # 1. Szczegóły filmu + trailer
+    cur.execute("""
+        SELECT
+            m.movie_description,
+            m.movie_rating,
+            m.movie_pg,
+            m.movie_release_date,
+            amd.movie_trailer
+        FROM "MOVIES" m
+        LEFT JOIN "ADDITIONAL_MOVIE_DATA" amd ON amd.movie_id = m.movie_id
+        WHERE m.movie_id = %s
+    """, (str(movie_id),))
+    movie_data = cur.fetchone()
+
+    if not movie_data:
+        cur.close()
+        conn.close()
+        return jsonify({"error": "Movie not found"}), 404
+
+    description, rating, pg, release_date, trailer_url = movie_data
+
+    # 2. Gatunki
+    cur.execute("""
+        SELECT g.genre_name
+        FROM "MOVIE_GENRES" mg
+        JOIN "GENRES" g ON mg.genre_id = g.genre_id
+        WHERE mg.movie_id = %s
+    """, (str(movie_id),))
+    genres = [row[0] for row in cur.fetchall()]
+
+    # 3. Aktorzy
+    cur.execute("""
+        SELECT a.first_name, a.last_name
+        FROM "MOVIE_ACTORS" ma
+        JOIN "ACTORS" a ON ma.actor_id = a.actor_id
+        WHERE ma.movie_id = %s
+    """, (str(movie_id),))
+    actors = [f"{row[0]} {row[1]}" for row in cur.fetchall()]
+
+    # 4. Reżyserzy
+    cur.execute("""
+        SELECT d.first_name, d.last_name
+        FROM "MOVIE_DIRECTORS" md
+        JOIN "DIRECTORS" d ON md.director_id = d.director_id
+        WHERE md.movie_id = %s
+    """, (str(movie_id),))
+    directors = [f"{row[0]} {row[1]}" for row in cur.fetchall()]
+
+    cur.close()
+    conn.close()
+
+    return jsonify({
+        # "movie_id": str(movie_id),
+        "description": description,
+        # "rating": rating,
+        # "pg": pg,
+        # "release_date": release_date.isoformat() if release_date else None,
+        "trailer_url": trailer_url,
+        "genres": genres,
+        "actors": actors,
+        "directors": directors
+    }), 200
 
 # Endpoint /movies-with-directors
 @app.route("/api/views/movies_with_directors", methods=["GET"])

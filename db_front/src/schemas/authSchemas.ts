@@ -1,0 +1,37 @@
+import { z } from "zod";
+
+export const loginRequestSchema = z.object({
+  login: z.string().min(3),
+  password: z.string().min(6),
+});
+
+export const registerRequestSchema = loginRequestSchema.extend({
+  email: z.string(),
+  dateOfBirth: z.string(),
+});
+
+export const authResponseSchema = z.object({
+  id: z.string().uuid(),
+  login: z.string(),
+  email: z.string().email(),
+  token: z.string(),
+});
+
+export const rootStateSchema = z.object({
+  user: authResponseSchema,
+});
+
+export const movieRequestSchema = z.object({
+  movie_id: z.string(),
+  movie_name: z.string(),
+  movie_poster: z.string(),
+  movie_preview_poster: z.string(),
+})
+
+export const movieDetailsResponseSchema = z.object({
+  description: z.string(),
+  trailer_url: z.string(),
+  genres: z.array(z.string()),
+  actors: z.array(z.string()),
+  directors: z.array(z.string()),
+})

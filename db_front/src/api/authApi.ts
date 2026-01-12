@@ -1,32 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-type tRegisterRequest = {
-  login: string;
-  email: string;
-  password: string;
-  dateOfBirth: string;
-}
-
-type tLoginRequest = {
-  login: string;
-  password: string;
-}
-
-type tAuthResponse = {
-  id: string;
-  login: string;
-  email: string;
-  token: string;
-}
-
-type tRootState = {
-    user: {
-        id: string;
-        login: string;
-        email: string;
-        token: string;
-    }
-}
+import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState } from "../types/authTypes";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -46,7 +19,7 @@ export const authApi = createApi({
     registerUser: builder.mutation<tAuthResponse, tRegisterRequest>({
        query: (body) => ({
         url: "/register",
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -57,14 +30,28 @@ export const authApi = createApi({
     loginUser: builder.mutation<tAuthResponse, tLoginRequest>({
        query: (body) => ({
         url: "/login",
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       }),
     }),
+    
+    getMovies: builder.query<tMovieResponse[], void>({
+      query: () => ({
+      url: "/movies",
+      method: "GET",
+      }),
+    }),
+    
+    getMovieDetails: builder.query<tMovieDetailsResponse, string>({
+      query: (movieId) => ({
+        url: `/movie_details/${movieId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authApi;
+export const { useRegisterUserMutation, useLoginUserMutation, useGetMoviesQuery, useGetMovieDetailsQuery } = authApi;

@@ -1,26 +1,26 @@
-from db.connection import conn
+import psycopg2
 
 # Filmy + dane dodatkowe
 movies = [
-    {"name": "The Shawshank Redemption", "language": "eng", "poster_path": "../posters/0.jpg",
+    {"name": "The Shawshank Redemption", "language": "eng", "poster_path": "../posters/0.jpg", "preview_poster_path" : "../preview_posters/0.jpg",
      "trailer": "https://www.youtube.com/watch?v=6hB3S9bIaco"},
-    {"name": "The Godfather", "language": "eng", "poster_path": "../posters/1.jpg",
+    {"name": "The Godfather", "language": "eng", "poster_path": "../posters/1.jpg", "preview_poster_path" : "../preview_posters/1.jpg",
      "trailer": "https://www.youtube.com/watch?v=sY1S34973zA"},
-    {"name": "The Dark Knight", "language": "eng", "poster_path": "../posters/2.jpg",
+    {"name": "The Dark Knight", "language": "eng", "poster_path": "../posters/2.jpg", "preview_poster_path" : "../preview_posters/2.jpg",
      "trailer": "https://www.youtube.com/watch?v=EXeTwQWrcwY"},
-    {"name": "12 Angry Men", "language": "eng", "poster_path": "../posters/3.jpg",
+    {"name": "12 Angry Men", "language": "eng", "poster_path": "../posters/3.jpg", "preview_poster_path" : "../preview_posters/3.jpg",
      "trailer": "https://www.youtube.com/watch?v=fSG38tk6TpI"},
-    {"name": "Schindler's List", "language": "eng", "poster_path": "../posters/4.jpg",
+    {"name": "Schindler's List", "language": "eng", "poster_path": "../posters/4.jpg", "preview_poster_path" : "../preview_posters/4.jpg",
      "trailer": "https://www.youtube.com/watch?v=gG22XNhtnoY"},
-    {"name": "The Lord of the Rings: The Return of the King", "language": "eng", "poster_path": "../posters/5.jpg",
+    {"name": "The Lord of the Rings: The Return of the King", "language": "eng", "poster_path": "../posters/5.jpg", "preview_poster_path" : "../preview_posters/5.jpg",
      "trailer": "https://www.youtube.com/watch?v=r5X-hFf6Bwo"},
-    {"name": "Pulp Fiction", "language": "eng", "poster_path": "../posters/6.jpg",
+    {"name": "Pulp Fiction", "language": "eng", "poster_path": "../posters/6.jpg", "preview_poster_path" : "../preview_posters/6.jpg",
      "trailer": "https://www.youtube.com/watch?v=s7EdQ4FqbhY"},
-    {"name": "Forrest Gump", "language": "eng", "poster_path": "../posters/7.jpg",
+    {"name": "Forrest Gump", "language": "eng", "poster_path": "../posters/7.jpg", "preview_poster_path" : "../preview_posters/7.jpg",
      "trailer": "https://www.youtube.com/watch?v=bLvqoHBptjg"},
-    {"name": "Inception", "language": "eng", "poster_path": "../posters/8.jpg",
+    {"name": "Inception", "language": "eng", "poster_path": "../posters/8.jpg", "preview_poster_path" : "../preview_posters/8.jpg",
      "trailer": "https://www.youtube.com/watch?v=YoHD9XEInc0"},
-    {"name": "Fight Club", "language": "eng", "poster_path": "../posters/9.jpg",
+    {"name": "Fight Club", "language": "eng", "poster_path": "../posters/9.jpg", "preview_poster_path" : "../preview_posters/9.jpg",
      "trailer": "https://www.youtube.com/watch?v=SUXWAEX2jlg"},
 ]
 
@@ -42,6 +42,8 @@ def insert_dumb_data_additional_movie_data():
         try:
             with open(movie["poster_path"], "rb") as f:
                 poster_bytes = f.read()
+            with open(movie["preview_poster_path"], "rb") as f:
+                preview_poster_bytes = f.read()
         except FileNotFoundError:
             print(f"❌ Brak pliku: {movie['poster_path']}")
             continue
@@ -49,13 +51,14 @@ def insert_dumb_data_additional_movie_data():
         # Wstaw dane do tabeli ADDITIONAL_MOVIE_DATA
         cur.execute("""
             INSERT INTO "ADDITIONAL_MOVIE_DATA" (
-                movie_id, movie_poster, movie_trailer, movie_language
-            ) VALUES (%s, %s, %s, %s)
+                movie_id, movie_poster, movie_trailer, movie_language, movie_preview_poster
+            ) VALUES (%s, %s, %s, %s %s)
         """, (
             movie_id,
             psycopg2.Binary(poster_bytes),
             movie["trailer"],
-            movie["language"]
+            movie["language"],
+            psycopg2.Binary(preview_poster_bytes)
         ))
 
         print(f"✅ Dodano dane dodatkowe: {movie['name']}")

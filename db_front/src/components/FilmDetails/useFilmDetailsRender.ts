@@ -1,15 +1,28 @@
+import { useSelector } from "react-redux";
+import type { AppState } from "../../store/store";
+import { useGetMovieDetailsQuery } from "../../api/authApi";
 
 export const useFilmDetailsRender = () => {
+
+  const { id, name, poster, preview_poster } = useSelector((state: AppState) => state.film);
+  const {
+    data: details,
+  } = useGetMovieDetailsQuery(id!, { skip: !id });
+
+
+  const formatYouTubeUrl = (url: string): string => {
+    const match = url.match(/v=([^&]+)/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+  }
+
   return {
-    title: 'AMERICAN PSYCHO',
-    description:
-      'Patrick Bateman is a wealthy New York City investment banking executive who hides his alternate psychopathic ego from his co-workers and friends as he delves deeper into his violent, hedonistic fantasies.',
-    poster:
-      'src/assets/poster.jpg',
-    backdrop:
-      'src/assets/film_kadr.jpg',
-    trailerUrl: 'https://youtube.com/embed/HHMaiPPjHHg',
-    cast: ['Christian Bale', 'Jared Leto', 'Willem Dafoe', ],
-    genres: ['Drama', 'Thriller'],
+    title: name,
+    poster,
+    backdrop: preview_poster,
+    trailerUrl: details?.trailer_url ? formatYouTubeUrl(details.trailer_url) : "",
+    description: details?.description || "",
+    cast: details?.actors || [],
+    genres: details?.genres || [],
+    directors: details?.directors || [],
   };
 };
