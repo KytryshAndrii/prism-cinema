@@ -16,7 +16,7 @@ def token_required(f):
             return jsonify({"message": "Token missing"}), 401
         try:
             data = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-            request.user = data  # możesz użyć dalej
+            request.user = data
         except:
             return jsonify({"message": "Invalid token"}), 401
         return f(*args, **kwargs)

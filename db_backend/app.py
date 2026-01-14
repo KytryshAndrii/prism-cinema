@@ -3,12 +3,12 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
 from db.connection import get_connection
+from search_entities import search_entities
 import uuid
 import base64
 
 from db_backend.auth_utils import generate_token
 from db_backend.token_validation import token_required
-
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
@@ -134,7 +134,7 @@ def get_users():
     users = []
     for row in rows:
         users.append({
-            "id": str(row[0]),                   # UUID → string
+            "id": str(row[0]),
             "login": row[1],
             "email": row[2],
             "isAdmin": row[3],
@@ -289,6 +289,53 @@ def movies_with_directors():
         })
 
     return jsonify(movies)
+
+# @app.route("movies/add", methods=["POST"])
+# def add_movie():
+#     data = request.get_json()
+#
+#     movie_name = data["movie_name"]
+#     movie_rating = data["movie_rating"]
+#     movie_release_date = data["movie_release_date"]
+#     movie_pg = data["movie_pg"]
+#     movie_description = data["movie_description"]
+#
+#     new_movie_id = str(uuid.uuid4())
+#
+#     actor_ids = data.get("actor_ids", "").split(";")
+#     director_ids = data.get("director_ids", "").split(";")
+#     genre_ids = data.get("genre_ids", "").split(";")
+#
+#     conn = get_connection()
+#     cur = conn.cursor()
+#
+#     cur.execute(""" """,)
+#
+#
+
+# @app.route("/search/actors", methods=["GET"])
+# def get_actors():
+#     return search_entities("ACTORS")
+
+# @app.route("/search/actors", methods=["GET"])
+# def
+
+@app.route("/search/actors", methods=["GET"])
+def get_search_actors():
+    return search_entities("ACTORS")
+
+@app.route("/search/directors", methods=["GET"])
+def get_search_directors():
+    return search_entities("DIRECTORS")
+
+@app.route("/search/users", methods=["GET"])
+def get_search_users():
+    return search_entities("USERS")
+
+@app.route("/search/movies", methods=["GET"])
+def get_search_movies():
+    return search_entities("MOVIES")
+
 
 # Uruchomienie serwera
 if __name__ == "__main__":
