@@ -15,12 +15,27 @@ import {
   ChipsRow,
   Chip,
   TrailerWrapper,
+  RowRating,
+  PgBadge,
+  ActionsPanel,
+  Underline,
+  ActionSwitch,
+  ActionSwitchButton,
+  LikeButton,
+  RateStar,
+  RatingWrapper,
+  GeneralDataWrapper,
 } from "./styles";
 import { useFilmDetailsRender } from "./useFilmDetailsRender";
 import { Skeleton } from "@mui/material";
+import type { AppState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { HeartIcon } from "../../icons/icons";
 
 const FilmDetails: React.FC = () => {
   const film = useFilmDetailsRender();
+  const user = useSelector((state: AppState) => state.user);
+  const [view, setView] = useState<"movie" | "trailer">("trailer");
   const [activeTab, setActiveTab] = useState<"cast" | "genres" | "directors">("cast");
 
   return (
@@ -35,8 +50,17 @@ const FilmDetails: React.FC = () => {
             <Poster src={film.poster!} />
           <div>
             <Title>{film.title}</Title>
+            <RowRating>
+              <RatingWrapper><RateStar/> <strong>{film.rating}/10</strong></RatingWrapper>
+              <PgBadge pg={film.pg}>{film.pg}</PgBadge>
+            </RowRating>
             {film.description ? (
-              <Description>{film.description}</Description>
+              <GeneralDataWrapper>
+                <Description>{film.description}</Description>
+                <Description>
+                  Release: <strong>{film.release_date}</strong>
+                </Description>
+              </GeneralDataWrapper>
               ): (
               <Skeleton variant="text" width={300} height={50} sx={{ bgcolor: 'grey.900' }}/>
               )
@@ -79,20 +103,55 @@ const FilmDetails: React.FC = () => {
           </div>
         </InfoGrid>
         <TrailerWrapper>
-          {film.trailerUrl ? (
-            <iframe
-              src={film.trailerUrl}
-              title="Movie trailer"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-              style={{ width: "100%", height: "100%", border: "none" }}
-            />
-          ) : ( 
-            <Skeleton variant="text"  sx={{height:'100%', bgcolor: 'grey.900' }}/>
+          {view === "trailer" || !user.isUserSubscribed ? (
+            film.trailerUrl ? (
+              <iframe
+                src={film.trailerUrl}
+                title="Movie trailer"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+                style={{ width: "100%", height: "100%", border: "none" }}
+              />
+            ) : (
+              <Skeleton variant="text" sx={{ height: "100%", bgcolor: "grey.900" }} />
             )
-          }
+            ) : (
+              <iframe
+                src="https://example.com/actual_movie.mp4"
+                title="Movie stream"
+                allowFullScreen
+                loading="lazy"
+                style={{ width: "100%", height: "100%", border: "none" }}
+              />
+            )}
         </TrailerWrapper>
+        {user.isUserSubscribed && (
+          <ActionsPanel>
+            <LikeButton active={film.isLiked}>
+              <HeartIcon />
+                Like
+            </LikeButton>
+
+            <Underline />
+
+            <ActionSwitch>
+              <ActionSwitchButton
+                active={view === "movie"}
+                onClick={() => setView("movie")}
+              >
+                MOVIE
+              </ActionSwitchButton>
+              <ActionSwitchButton
+                active={view === "trailer"}
+                onClick={() => setView("trailer")}
+              >
+                TRAILER
+              </ActionSwitchButton>
+            </ActionSwitch>
+          </ActionsPanel>
+        )}
+
       </ContentWrapper>
     </PageWrapper>
   );

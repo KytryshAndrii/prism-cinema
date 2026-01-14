@@ -1,17 +1,17 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 type tFilmState = {
-id: string | null;
-name: string | null;
-poster: string | null;
-preview_poster: string | null;
+    id: string | null;
+    name: string | null;
+    poster: string | null;
+    preview_poster: string | null;
 };
 
 const initialState: tFilmState = {
-id: null,
-name: null,
-poster: null,
-preview_poster: null
+    id: null,
+    name: null,
+    poster: null,
+    preview_poster: null,
 };
 
 const filmSlice = createSlice({

@@ -5,6 +5,8 @@ type tUserState = {
   login: string | null;
   email: string | null;
   token: string | null;
+  isUserSubscribed: boolean;
+  isUserAdmin: boolean;
   isLoggedIn: boolean;
 }
 
@@ -13,6 +15,8 @@ const initialState: tUserState = {
   login: null,
   email: null,
   token: null,
+  isUserAdmin: false,
+  isUserSubscribed: false,
   isLoggedIn: false,
 };
 

@@ -14,6 +14,8 @@ export const authResponseSchema = z.object({
   id: z.string().uuid(),
   login: z.string(),
   email: z.string().email(),
+  isUserSubscribed: z.boolean(),
+  isUserAdmin: z.boolean(),
   token: z.string(),
 });
 
@@ -31,6 +33,9 @@ export const movieRequestSchema = z.object({
 export const movieDetailsResponseSchema = z.object({
   description: z.string(),
   trailer_url: z.string(),
+  pg: z.string(),
+  rating: z.string(),
+  release_date: z.string(),
   genres: z.array(z.string()),
   actors: z.array(z.string()),
   directors: z.array(z.string()),

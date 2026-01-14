@@ -28,7 +28,7 @@ const MainPage: React.FC = () => {
       id: film.id,
       name: film.title,
       poster: film.imageUrl,
-      preview_poster: film.previewImg
+      preview_poster: film.previewImg,
     }));
     navigate(`/film_entity`);
   };

@@ -65,6 +65,8 @@ def register_user():
         "id": str(new_user_id),
         "login": login,
         "email": email,
+        "isUserSubscribed": False,
+        "isUserAdmin": False,
         "token": token
     }), 200
 
@@ -79,7 +81,8 @@ def login_user():
     cur = conn.cursor()
 
     cur.execute("""
-           SELECT user_id, user_login, user_mail, user_password
+           SELECT user_id, user_login, user_mail, user_password, user_is_admin,
+            user_is_subscribed
            FROM "USERS"
            WHERE user_login = %s
        """, (login,))
@@ -97,6 +100,8 @@ def login_user():
                 "id": user[0],
                 "login": user[1],
                 "email": user[2],
+                "isUserSubscribed": user[5],
+                "isUserAdmin": user[4],
                 "token": token
             }), 200
         else:
@@ -142,7 +147,7 @@ def get_users():
 
 
 @app.route("/movies", methods=["GET"])
-@token_required
+# @token_required
 def get_movies():
     conn = get_connection()
     cur = conn.cursor()
@@ -193,7 +198,6 @@ def get_movies():
     return jsonify(movies), 200
 
 @app.route("/movie_details/<uuid:movie_id>", methods=["GET"])
-@token_required
 def get_movie_details(movie_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -250,11 +254,10 @@ def get_movie_details(movie_id):
     conn.close()
 
     return jsonify({
-        # "movie_id": str(movie_id),
         "description": description,
-        # "rating": rating,
-        # "pg": pg,
-        # "release_date": release_date.isoformat() if release_date else None,
+        "rating": rating,
+        "pg": pg,
+        "release_date": release_date.isoformat() if release_date else None,
         "trailer_url": trailer_url,
         "genres": genres,
         "actors": actors,

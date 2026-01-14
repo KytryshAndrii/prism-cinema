@@ -8,7 +8,7 @@ export const useFilmDetailsRender = () => {
   const {
     data: details,
   } = useGetMovieDetailsQuery(id!, { skip: !id });
-
+// here need to implement logic for user if her has liked film
 
   const formatYouTubeUrl = (url: string): string => {
     const match = url.match(/v=([^&]+)/);
@@ -24,5 +24,9 @@ export const useFilmDetailsRender = () => {
     cast: details?.actors || [],
     genres: details?.genres || [],
     directors: details?.directors || [],
+    pg: details?.pg || "",
+    release_date: details?.release_date || "",
+    rating: details?.rating || "",
+    isLiked: true
   };
 };
