@@ -1,20 +1,16 @@
 import type React from "react";
 import { Brand, NavbarBox, NavButtons, SearchInput, ToolbarStyled, SingleNavButton, BrandWithAvatarButtons, UserAvatar } from "./styles";
 import SignUpModal from "./Register/SignUpModal";
-import { useNavBar } from "./useNavBar";
 import SignInForm from "./Sign/SignInForm";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { AppState } from "../../store/store";
-import { Avatar} from "@mui/material";
+import { useAuthForms } from "../../context/AuthFormContext";
+import UserDropdown from "./UserDropdown/UserDropdown";
 
 const NavBar: React.FC = () => {
 
-  const {  isSignUpOpen,
-        isSignInOpen,
-        toggleSignInForm,
-        toggleSignUpForm
-      } = useNavBar();
+    const { isSignInOpen, isSignUpOpen, toggleSignInForm, toggleSignUpForm } = useAuthForms();
 
   const navigate = useNavigate();
   const { isLoggedIn, login } = useSelector((state: AppState) => state.user);
@@ -24,18 +20,12 @@ const NavBar: React.FC = () => {
         <NavbarBox>
           <ToolbarStyled>
            <BrandWithAvatarButtons> 
-            <Brand>
+            <Brand onClick={() => {if (!isLoggedIn) navigate("/")}}>
               PRISM<span>.</span>CINEMA
             </Brand>
             {isLoggedIn? 
               ( 
-                <UserAvatar>
-                  <Avatar
-                    src="src/assets/user_avatar/user_avatar.svg"
-                    alt="User Icon"
-                  />
-                  {login?.toUpperCase()}
-                </UserAvatar>
+                <UserDropdown userLogin={login || ""}/>
               ): <></>}
             </BrandWithAvatarButtons>
            {isLoggedIn ? (
@@ -51,6 +41,7 @@ const NavBar: React.FC = () => {
               <SingleNavButton onClick={toggleSignInForm}>SIGN IN</SingleNavButton>
               <SingleNavButton onClick={toggleSignUpForm}>CREATE ACCOUNT</SingleNavButton>
               <SingleNavButton onClick={() => navigate("/films")}>FILMS</SingleNavButton>
+              <SingleNavButton onClick={() => navigate("/subscriptions")}>SUBSCRIPTIONS</SingleNavButton>
               <SearchInput placeholder="Search..." />
             </NavButtons>
           )}

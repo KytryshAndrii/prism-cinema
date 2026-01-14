@@ -33,10 +33,10 @@ def register_user():
 
     # Check if user exists
     cur.execute("""
-        SELECT 1 FROM "USERS"
-        WHERE user_login = %s OR user_mail = %s
-        LIMIT 1
-    """, (login, email))
+            SELECT 1 FROM "USERS"
+            WHERE user_login = %s OR user_mail = %s
+            LIMIT 1
+        """, (login, email))
 
     existing = cur.fetchone()
     if existing:
@@ -48,14 +48,14 @@ def register_user():
     new_user_id = str(uuid.uuid4())
 
     cur.execute("""
-        INSERT INTO "USERS" (
-            user_id, user_login, user_mail,
-            user_password, user_is_admin,
-            user_is_subscribed, user_location_region,
-            user_date_of_birth
-        )
-        VALUES (%s, %s, %s, %s, FALSE, FALSE, %s, %s)
-    """, (new_user_id, login, email, hashed_password, "PL", date_of_birth))
+            INSERT INTO "USERS" (
+                user_id, user_login, user_mail,
+                user_password, user_is_admin,
+                user_is_subscribed, user_location_region,
+                user_date_of_birth
+            )
+            VALUES (%s, %s, %s, %s, FALSE, FALSE, %s, %s)
+        """, (new_user_id, login, email, hashed_password, "PL", date_of_birth))
 
     conn.commit()
     cur.close()
@@ -69,6 +69,7 @@ def register_user():
         "isUserAdmin": False,
         "token": token
     }), 200
+
 
 @app.route('/login', methods=['POST'])
 @cross_origin()

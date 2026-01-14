@@ -10,6 +10,8 @@ export const Container = styled(Box)({
   minHeight: '100vh',
   background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0) 100%)`,
   backdropFilter: 'blur(1rem)',
+  overflowY: "hidden"
+  
 });
 
 export const Heading = styled('h2')({
@@ -52,6 +54,7 @@ export const FilmImage = styled('img')({
 });
 
 export const FilmInfo = styled(Box)({
+  height: "100%",
   padding: '0.5rem',
   backgroundColor: '#222',
 });

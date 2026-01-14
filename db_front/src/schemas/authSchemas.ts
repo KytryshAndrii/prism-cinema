@@ -11,9 +11,9 @@ export const registerRequestSchema = loginRequestSchema.extend({
 });
 
 export const authResponseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   login: z.string(),
-  email: z.string().email(),
+  email: z.string(),
   isUserSubscribed: z.boolean(),
   isUserAdmin: z.boolean(),
   token: z.string(),

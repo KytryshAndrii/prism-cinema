@@ -11,6 +11,9 @@ import {
   SubscribeButton,
 } from './styles';
 import { Box } from '@mui/material';
+import type { AppState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { useAuthForms } from '../../context/AuthFormContext';
 
 type SubscriptionPlan = {
   id: string;
@@ -49,8 +52,16 @@ const plans: SubscriptionPlan[] = [
 
 const SubscriptionPlans: React.FC = () => {
 
+  const { isLoggedIn } = useSelector((state: AppState) => state.user);
+  const { toggleSignUpForm } = useAuthForms();
   const handleSubscribe = (planId: string) => {
-    console.log('Subscribe:', planId);
+    if(!isLoggedIn){
+      toggleSignUpForm();
+      return;
+    }
+    console.log(planId)
+    return; // HERE LOGIC OF PLAN CHANGE
+    
   };
 
   return (
@@ -62,9 +73,6 @@ const SubscriptionPlans: React.FC = () => {
               <Badge color={plan.badgeColor}>{plan.label}</Badge>
               <Description>{plan.description}</Description>
             </Box>
-
-             {plan.id === 'free' ? <></>
-            : 
             <Box>
               <Price>
                 <PriceCurrency>PLN</PriceCurrency>
@@ -74,7 +82,7 @@ const SubscriptionPlans: React.FC = () => {
                 SUBSCRIBE
               </SubscribeButton> 
             </Box>
-            }
+      
           </PlanCard>
         ))}
       </PlansContainer>

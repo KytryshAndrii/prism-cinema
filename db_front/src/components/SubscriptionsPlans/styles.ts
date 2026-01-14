@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 export const Wrapper = styled(Box)({
   width: '100%',
-  minHeight: '100vh',
+  minHeight: '90vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
