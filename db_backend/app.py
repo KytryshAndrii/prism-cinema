@@ -128,7 +128,7 @@ def login_user():
     except ValueError:
         return jsonify(None), 406
 
-@app.route("/edit/user/<uuid:user_id>", methods=["POST"])
+@app.route("/update/user/<uuid:user_id>", methods=["POST"])
 @token_required
 def update_user_profile(user_id):
     data = request.get_json()
