@@ -36,7 +36,11 @@ export const useSignIn = (onClose: () => void) => {
           login: result.login,
           email: result.email,
           token: result.token,
+          region: result.region,
+          birthday: result.birthday,
           isLoggedIn: true,
+          isUserAdmin: result.isUserAdmin,
+          isUserSubscribed: result.isUserSubscribed
         })
       );
 

@@ -74,3 +74,9 @@ export const NonEditableUserData = styled(Box)({
     flexDirection: "row",
     gap: "2rem"
 })
+
+export const InfoBox = styled(Box)({
+  display: "flex",
+  alignSelf: "center",
+  maxWidth:"70%"
+})

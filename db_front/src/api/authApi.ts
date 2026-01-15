@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState } from "../types/authTypes";
+import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tUpdateUserDataResponse } from "../types/authTypes";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -37,6 +37,24 @@ export const authApi = createApi({
         body: JSON.stringify(body),
       }),
     }),
+
+    updateUserProfile: builder.mutation<void, tUpdateUserDataResponse>({
+      query: ({ userId, ...body }) => ({
+        url: `/user_update/${userId}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }),
+    }),
+
+    searchMovies: builder.query<{ id: string; name: string }[],string>({
+      query: (query) => ({
+        url: `/search/movies?q=${encodeURIComponent(query)}`,
+        method: "GET",
+      }),
+    }),
     
     getMovies: builder.query<tMovieResponse[], void>({
       query: () => ({
@@ -54,4 +72,10 @@ export const authApi = createApi({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation, useGetMoviesQuery, useGetMovieDetailsQuery } = authApi;
+export const {  useRegisterUserMutation, 
+                useLoginUserMutation,
+                useGetMoviesQuery, 
+                useGetMovieDetailsQuery,
+                useUpdateUserProfileMutation,
+                useSearchMoviesQuery 
+        } = authApi;

@@ -34,7 +34,11 @@ export const useSignUpModal = (onClose: () => void) => {
           login: result.login,
           email: result.email,
           token: result.token,
+          birthday: formData.dateOfBirth,
+          region: "PL",
           isLoggedIn: true,
+          isUserSubscribed: false ,
+          isUserAdmin: false,
         })
       );
 

@@ -14,10 +14,19 @@ export const authResponseSchema = z.object({
   id: z.string(),
   login: z.string(),
   email: z.string(),
+  region: z.string(),
+  birthday: z.string(),
   isUserSubscribed: z.boolean(),
   isUserAdmin: z.boolean(),
   token: z.string(),
 });
+
+export const userProfileUpdateSchema = z.object({
+  email: z.string().optional(),
+  userId: z.string().optional(),
+  login: z.string().optional(),
+  password: z.string().optional(),
+})
 
 export const rootStateSchema = z.object({
   user: authResponseSchema,

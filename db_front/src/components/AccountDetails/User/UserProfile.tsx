@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import type { AppState } from "../../../store/store";
-import { EditIconWrapper, FieldLabel, FieldRow, NonEditableUserData, ProfileTitle, ProfileWrapper, ReadOnlyText, SaveButton, StyledInput } from "./styles";
+import { EditIconWrapper, FieldLabel, FieldRow, InfoBox, NonEditableUserData, ProfileTitle, ProfileWrapper, ReadOnlyText, SaveButton, StyledInput } from "./styles";
 import type { tFormValues } from "./types";
+import { useUserProfile } from "./useUserProfile";
+import { Alert, CircularProgress } from "@mui/material";
 
 const UserProfile: React.FC = () => {
   const user = useSelector((state: AppState) => state.user);
@@ -16,8 +18,6 @@ const UserProfile: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
   } = useForm<tFormValues>({
     defaultValues: {
       login: user.login ?? "",
@@ -27,39 +27,39 @@ const UserProfile: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: tFormValues) => {
-    console.log("Form Data:", data);
-    // Integracja z authApi → np. authApi.updateUserProfile(data)
-  };
+  const {
+    onSubmit,
+    errorMsg,
+    successMsg,
+    isLoading,
+  } = useUserProfile({
+    isEditingLogin,
+    isEditingEmail,
+    isEditingPassword,
+  });
 
-  const password = watch("password");
+
+  const cropDate = (date: string): string =>
+    date ? new Date(date).toISOString().split("T")[0] : "";
 
   return (
     <ProfileWrapper onSubmit={handleSubmit(onSubmit)}>
       <ProfileTitle>PROFILE</ProfileTitle>
 
-      {/* Username */}
       <FieldLabel>Username</FieldLabel>
       <FieldRow>
-        <StyledInput
-          disabled={!isEditingLogin}
-          {...register("login", { required: true })}
-        />
+        <StyledInput disabled={!isEditingLogin} {...register("login")} />
         <EditIconWrapper onClick={() => setIsEditingLogin(!isEditingLogin)}>
           <EditIcon />
         </EditIconWrapper>
       </FieldRow>
 
-      {/* Password */}
       <FieldLabel>Password</FieldLabel>
       <FieldRow>
         <StyledInput
           type="password"
           disabled={!isEditingPassword}
-          {...register("password", {
-            required: isEditingPassword,
-            minLength: 6,
-          })}
+          {...register("password")}
         />
         <EditIconWrapper onClick={() => setIsEditingPassword(!isEditingPassword)}>
           <EditIcon />
@@ -72,39 +72,40 @@ const UserProfile: React.FC = () => {
           <FieldRow>
             <StyledInput
               type="password"
-              {...register("confirmPassword", {
-                validate: (value) =>
-                  value === password || "Passwords do not match",
-              })}
+              {...register("confirmPassword")}
             />
           </FieldRow>
         </>
       )}
 
-      {/* Email */}
       <FieldLabel>Email address</FieldLabel>
       <FieldRow>
         <StyledInput
           type="email"
           disabled={!isEditingEmail}
-          {...register("email", { required: true })}
+          {...register("email")}
         />
         <EditIconWrapper onClick={() => setIsEditingEmail(!isEditingEmail)}>
           <EditIcon />
         </EditIconWrapper>
       </FieldRow>
 
-      {/* Birthdate (read-only) */}
       <NonEditableUserData>
         <FieldLabel>Date of Birth:</FieldLabel>
-        <ReadOnlyText>1990-12-12</ReadOnlyText> {/* TODO: dynamicznie z backendu */}
+        <ReadOnlyText>{cropDate(user.birthday!)}</ReadOnlyText>
       </NonEditableUserData>
-      {/* Region (read-only) */}
+
       <NonEditableUserData>
         <FieldLabel>Region:</FieldLabel>
-        <ReadOnlyText>Poland</ReadOnlyText> {/* TODO: dynamicznie z backendu */}
+        <ReadOnlyText>{user.region}</ReadOnlyText>
       </NonEditableUserData>
-      <SaveButton type="submit">Save changes</SaveButton>
+      <InfoBox>
+        {errorMsg && <Alert severity="warning">{errorMsg}</Alert>}
+        {successMsg && <Alert severity="success">{successMsg}</Alert>}
+      </InfoBox>
+      <SaveButton type="submit" disabled={isLoading}>
+        {isLoading ? <CircularProgress size={20} /> : "Save changes"}
+      </SaveButton>
     </ProfileWrapper>
   );
 };

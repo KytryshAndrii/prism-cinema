@@ -4,6 +4,8 @@ type tUserState = {
   id: string | null;
   login: string | null;
   email: string | null;
+  region: string | null;
+  birthday: string | null;
   token: string | null;
   isUserSubscribed: boolean;
   isUserAdmin: boolean;
@@ -14,6 +16,8 @@ const initialState: tUserState = {
   id: null,
   login: null,
   email: null,
+  region: null,
+  birthday: null,
   token: null,
   isUserAdmin: false,
   isUserSubscribed: false,
@@ -31,8 +35,20 @@ const userSlice = createSlice({
         return { ...action.payload };
     },
     logOut: () => initialState,
+    
+    updateUser: (
+      state,
+      action: PayloadAction<{ login?: string; email?: string }>
+    ) => {
+      if (action.payload.login) {
+        state.login = action.payload.login;
+      }
+      if (action.payload.email) {
+        state.email = action.payload.email;
+      }
+    },
   },
 });
 
-export const { logIn, logOut } = userSlice.actions;
+export const { logIn, logOut, updateUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -83,7 +83,7 @@ def login_user():
 
     cur.execute("""
            SELECT user_id, user_login, user_mail, user_password, user_is_admin,
-            user_is_subscribed
+            user_is_subscribed, user_location_region, user_date_of_birth 
            FROM "USERS"
            WHERE user_login = %s
        """, (login,))
@@ -101,6 +101,8 @@ def login_user():
                 "id": user[0],
                 "login": user[1],
                 "email": user[2],
+                "region": user[6],
+                "birthday": user[7],
                 "isUserSubscribed": user[5],
                 "isUserAdmin": user[4],
                 "token": token
@@ -109,6 +111,76 @@ def login_user():
             return jsonify(None), 401
     except ValueError:
         return jsonify(None), 406
+
+@app.route("/user_update/<uuid:user_id>", methods=["POST"])
+@token_required
+def update_user_profile(user_id):
+    data = request.get_json()
+
+    if not data:
+        return "", 400
+
+    login = data.get("login")
+    email = data.get("email")
+    password = data.get("password")
+
+    if not any([login, email, password]):
+        return "", 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        # sprawdz login/email conflict
+        if login or email:
+            cur.execute("""
+                SELECT 1 FROM "USERS"
+                WHERE (user_login = %s OR user_mail = %s)
+                AND user_id != %s
+                LIMIT 1
+            """, (login, email, str(user_id)))
+
+            if cur.fetchone():
+                return "", 409
+
+        if login:
+            cur.execute("""
+                UPDATE "USERS"
+                SET user_login = %s
+                WHERE user_id = %s
+            """, (login, str(user_id)))
+
+        if email:
+            cur.execute("""
+                UPDATE "USERS"
+                SET user_mail = %s
+                WHERE user_id = %s
+            """, (email, str(user_id)))
+
+        if password:
+            hashed = bcrypt.hashpw(
+                password.encode("utf-8"),
+                bcrypt.gensalt()
+            ).decode("utf-8")
+
+            cur.execute("""
+                UPDATE "USERS"
+                SET user_password = %s
+                WHERE user_id = %s
+            """, (hashed, str(user_id)))
+
+        conn.commit()
+        return "", 200
+
+    except Exception as e:
+        conn.rollback()
+        return "", 500
+
+    finally:
+        cur.close()
+        conn.close()
+
+
 
 @app.route("/users", methods=["GET"])
 def get_users():
@@ -145,6 +217,7 @@ def get_users():
         })
 
     return jsonify(users)
+
 
 
 @app.route("/movies", methods=["GET"])

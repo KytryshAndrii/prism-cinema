@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { AppState } from "../../store/store";
 import { useAuthForms } from "../../context/AuthFormContext";
 import UserDropdown from "./UserDropdown/UserDropdown";
+import SearchBar from "./SearchBar/SearchBar";
 
 const NavBar: React.FC = () => {
 
@@ -42,7 +43,7 @@ const NavBar: React.FC = () => {
               <SingleNavButton onClick={toggleSignUpForm}>CREATE ACCOUNT</SingleNavButton>
               <SingleNavButton onClick={() => navigate("/films")}>FILMS</SingleNavButton>
               <SingleNavButton onClick={() => navigate("/subscriptions")}>SUBSCRIPTIONS</SingleNavButton>
-              <SearchInput placeholder="Search..." />
+              <SearchBar/>
             </NavButtons>
           )}
         </ToolbarStyled>
