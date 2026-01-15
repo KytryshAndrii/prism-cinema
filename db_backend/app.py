@@ -2,13 +2,14 @@ import bcrypt
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
-from db.connection import get_connection
+from utils.connection import get_connection
 from search_entities import search_entities
 import uuid
 import base64
 
 from db_backend.auth_utils import generate_token
 from db_backend.token_validation import token_required
+from service.user import register_user_logic
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
@@ -82,6 +83,8 @@ def register_user():
         "isUserAdmin": False,
         "token": token
     }), 200
+    result, status_code = register_user_logic(data)
+    return jsonify(result), status_code
 
 
 @app.route('/login', methods=['POST'])
@@ -125,7 +128,7 @@ def login_user():
     except ValueError:
         return jsonify(None), 406
 
-@app.route("/user_update/<uuid:user_id>", methods=["POST"])
+@app.route("/edit/user/<uuid:user_id>", methods=["POST"])
 @token_required
 def update_user_profile(user_id):
     data = request.get_json()
@@ -231,8 +234,6 @@ def get_users():
         })
 
     return jsonify(users)
-
-
 
 @app.route("/movies", methods=["GET"])
 # @token_required
@@ -635,35 +636,218 @@ def movies_with_directors():
 
     return jsonify(movies)
 
-# @app.route("movies/add", methods=["POST"])
-# def add_movie():
-#     data = request.get_json()
-#
-#     movie_name = data["movie_name"]
-#     movie_rating = data["movie_rating"]
-#     movie_release_date = data["movie_release_date"]
-#     movie_pg = data["movie_pg"]
-#     movie_description = data["movie_description"]
-#
-#     new_movie_id = str(uuid.uuid4())
-#
-#     actor_ids = data.get("actor_ids", "").split(";")
-#     director_ids = data.get("director_ids", "").split(";")
-#     genre_ids = data.get("genre_ids", "").split(";")
-#
-#     conn = get_connection()
-#     cur = conn.cursor()
-#
-#     cur.execute(""" """,)
-#
-#
+@app.route("/add/movies", methods=["POST"])
+def add_movie():
+    data = request.get_json()
 
-# @app.route("/search/actors", methods=["GET"])
-# def get_actors():
-#     return search_entities("ACTORS")
+    movie_name = data.get("movie_name")
+    movie_rating = data.get("movie_rating")
+    movie_release_date = data.get("movie_release_date")
+    movie_pg = data.get("movie_pg")
+    movie_description = data.get("movie_description")
 
-# @app.route("/search/actors", methods=["GET"])
-# def
+    new_movie_id = str(uuid.uuid4())
+
+    actor_ids = list(filter(None, (data.get("actor_ids") or "").split(";")))
+    director_ids = list(filter(None, (data.get("director_ids") or "").split(";")))
+    genre_ids = list(filter(None, (data.get("genre_ids") or "").split(";")))
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            INSERT INTO "MOVIES" 
+            (movie_id, movie_name, movie_rating, movie_release_date, movie_pg, movie_description)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (new_movie_id, movie_name, movie_rating, movie_release_date, movie_pg, movie_description))
+
+        for actor_id in actor_ids:
+            cur.execute("""INSERT INTO "MOVIE_ACTORS" (movie_id, actor_id) VALUES (%s, %s)""",
+                        (new_movie_id, actor_id))
+
+        for director_id in director_ids:
+            cur.execute("""INSERT INTO "MOVIE_DIRECTORS" (movie_id, director_id) VALUES (%s, %s)""",
+                        (new_movie_id, director_id))
+
+        for genre_id in genre_ids:
+            cur.execute("""INSERT INTO "MOVIE_GENRES" (movie_id, genre_id) VALUES (%s, %s)""",
+                        (new_movie_id, genre_id))
+
+        cur.execute("""
+                    INSERT INTO "ADDITIONAL_MOVIE_DATA"
+                    (movie_id, movie_poster, movie_trailer, movie_language, movie_preview_poster)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """, (new_movie_id,))
+
+        conn.commit()
+        return "", 200
+
+    except Exception as e:
+        conn.rollback()
+        return "", 406
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/update/movies/<uuid:movie_id>", methods=["POST"])
+def update_movie(movie_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+
+    allowed_fields = ["movie_name", "movie_rating", "movie_release_date", "movie_pg", "movie_description"]
+
+    update_fields = {k: v for k, v in data.items() if k in allowed_fields}
+
+    if not update_fields:
+        return jsonify({"error": "No valid fields to update"}), 400
+
+    set_clause = ", ".join([f"{k} = %s" for k in update_fields.keys()])
+    values = list(update_fields.values())
+    values.append(str(movie_id))
+
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute(f"""
+            UPDATE "MOVIES"
+            SET {set_clause}
+            WHERE movie_id = %s
+        """, values)
+
+        # if cur.rowcount == 0:
+        #     return jsonify({"error": "Movie not found"}), 404
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return "", 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/update/additional_movie_data/<uuid:movie_id>", methods=["POST"])
+def update_additional_movie_data(movie_id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+    # Allowed fields for updating
+    allowed_fields = ["movie_poster", "movie_trailer", "movie_language", "movie_preview_poster"]
+
+    update_fields = {}
+    for k, v in data.items():
+        if k in allowed_fields:
+            if k in ["movie_poster", "movie_preview_poster"] and v:
+                try:
+                    update_fields[k] = base64.b64decode(v)
+                except Exception:
+                    return jsonify({"error": f"Invalid Base64 data for {k}"}), 400
+            else:
+                update_fields[k] = v
+
+    if not update_fields:
+        return jsonify({"error": "No valid fields to update"}), 400
+
+    set_clause = ", ".join([f"{k} = %s" for k in update_fields.keys()])
+    values = list(update_fields.values())
+    values.append(str(movie_id))
+
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute(f"""
+            UPDATE "ADDITIONAL_MOVIE_DATA"
+            SET {set_clause}
+            WHERE movie_id = %s
+        """, values)
+
+        if cur.rowcount == 0:
+            return jsonify({"error": "Movie not found"}), 404
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return jsonify({"message": "Additional movie data updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/movie_test/<uuid:movie_id>", methods=["GET"])
+def movie_test(movie_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT movie_id, movie_name, movie_rating, movie_release_date, movie_pg, movie_description
+            FROM "MOVIES"
+            WHERE movie_id = %s
+        """, (str(movie_id),))
+        movie = cur.fetchone()
+
+        if not movie:
+            return "", 404
+
+        movie_data = {
+            "movie_id": movie[0],
+            "movie_name": movie[1],
+            "movie_rating": movie[2],
+            "movie_release_date": movie[3],
+            "movie_pg": movie[4],
+            "movie_description": movie[5],
+            "actors": [],
+            "directors": [],
+            "genres": []
+        }
+
+        cur.execute("""
+            SELECT a.actor_id, a.first_name, a.middle_name, a.last_name
+            FROM "MOVIE_ACTORS" ma
+            JOIN "ACTORS" a ON ma.actor_id = a.actor_id
+            WHERE ma.movie_id = %s
+        """, (str(movie_id),))
+        movie_data["actors"] = [
+            {"actor_id": r[0], "name": " ".join(filter(None, [r[1], r[2], r[3]]))}
+            for r in cur.fetchall()
+        ]
+
+        cur.execute("""
+            SELECT d.director_id, d.first_name, d.middle_name, d.last_name
+            FROM "MOVIE_DIRECTORS" md
+            JOIN "DIRECTORS" d ON md.director_id = d.director_id
+            WHERE md.movie_id = %s
+        """, (str(movie_id),))
+        movie_data["directors"] = [
+            {"director_id": r[0], "name": " ".join(filter(None, [r[1], r[2], r[3]]))}
+            for r in cur.fetchall()
+        ]
+
+        cur.execute("""
+            SELECT g.genre_id, g.genre_name
+            FROM "MOVIE_GENRES" mg
+            JOIN "GENRES" g ON mg.genre_id = g.genre_id
+            WHERE mg.movie_id = %s
+        """, (str(movie_id),))
+        movie_data["genres"] = [
+            {"genre_id": r[0], "name": r[1]} for r in cur.fetchall()
+        ]
+
+        return jsonify(movie_data), 200
+
+    finally:
+        cur.close()
+        conn.close()
 
 @app.route("/search/actors", methods=["GET"])
 def get_search_actors():
@@ -674,6 +858,7 @@ def get_search_directors():
     return search_entities("DIRECTORS")
 
 @app.route("/search/users", methods=["GET"])
+@token_required
 def get_search_users():
     return search_entities("USERS")
 
