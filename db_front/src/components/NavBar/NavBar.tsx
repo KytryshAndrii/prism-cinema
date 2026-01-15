@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
             <NavButtons>
               <SingleNavButton onClick={() => navigate("/likes")}>LIKES</SingleNavButton>
               <SingleNavButton onClick={() => navigate("/films")}>FILMS</SingleNavButton>
-              <SearchInput placeholder="Search..." />
+              <SearchBar/>
             </NavButtons>
           ) : isSignInOpen ? (
             <SignInForm isOpen={isSignInOpen} onClose={toggleSignInForm} />

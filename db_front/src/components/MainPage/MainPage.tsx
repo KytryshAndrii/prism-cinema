@@ -27,8 +27,6 @@ const MainPage: React.FC = () => {
     dispatch(setFilm({
       id: film.id,
       name: film.title,
-      poster: film.imageUrl,
-      preview_poster: film.previewImg,
     }));
     navigate(`/film_entity`);
   };

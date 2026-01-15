@@ -47,8 +47,16 @@ const userSlice = createSlice({
         state.email = action.payload.email;
       }
     },
+
+    subscribe:  (state) => {
+      state.isUserSubscribed = true;
+    },
+
+    unsubscribe:  (state) => {
+      state.isUserSubscribed = false;
+    },
   },
 });
 
-export const { logIn, logOut, updateUser } = userSlice.actions;
+export const { logIn, logOut, updateUser, subscribe, unsubscribe } = userSlice.actions;
 export default userSlice.reducer;

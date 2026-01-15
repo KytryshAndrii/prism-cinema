@@ -7,7 +7,6 @@ export const useMainPageFilmsRender = () => {
     id: movie.movie_id,
     title: movie.movie_name,
     imageUrl: `data:image/jpeg;base64,${movie.movie_poster}`,
-    previewImg: `data:image/jpeg;base64,${movie.movie_preview_poster}`
   }));
 
   return {

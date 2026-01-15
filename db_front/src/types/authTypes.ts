@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { authResponseSchema, loginRequestSchema, movieDetailsResponseSchema, movieRequestSchema, registerRequestSchema, rootStateSchema, userProfileUpdateSchema } from "../schemas/authSchemas";
+import type { authResponseSchema, loginRequestSchema, movieDetailsResponseSchema, movieRequestSchema, registerRequestSchema, rootStateSchema, searchMovieResponseSchema, subscriptionsPlansResponseSchema, userProfileUpdateSchema } from "../schemas/authSchemas";
 
 export type tLoginRequest = z.infer<typeof loginRequestSchema>;
 export type tRegisterRequest = z.infer<typeof registerRequestSchema>;
@@ -8,3 +8,5 @@ export type tRootState = z.infer<typeof rootStateSchema>;
 export type tMovieResponse = z.infer<typeof movieRequestSchema>;
 export type tMovieDetailsResponse = z.infer<typeof movieDetailsResponseSchema>;
 export type tUpdateUserDataResponse = z.infer<typeof userProfileUpdateSchema>;
+export type tSearchMoviesResponse = z.infer<typeof searchMovieResponseSchema>;
+export type tSubscriptionsPlansResponse = z.infer<typeof subscriptionsPlansResponseSchema>;

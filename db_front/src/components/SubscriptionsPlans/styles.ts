@@ -1,10 +1,11 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Alert, Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const Wrapper = styled(Box)({
   width: '100%',
   minHeight: '90vh',
   display: 'flex',
+  flexDirection: "column",
   justifyContent: 'center',
   alignItems: 'center',
 });
@@ -76,4 +77,15 @@ export const SubscribeButton = styled(Button)({
   '&:hover': {
     backgroundColor: '#1565c0',
   },
+});
+
+export const AlertWrapper = styled(Alert)({
+  width: "40%",
+  marginTop: "1.5rem",
+});
+
+export const CurrentPlanText = styled(Typography)({
+  fontWeight: "bold",
+  color: "#4caf50",
+  marginTop: '4.5rem',
 });

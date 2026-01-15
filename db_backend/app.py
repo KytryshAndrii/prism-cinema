@@ -183,6 +183,7 @@ def update_user_profile(user_id):
 
 
 @app.route("/users", methods=["GET"])
+@token_required
 def get_users():
     conn = get_connection()
     cur = conn.cursor()
@@ -256,17 +257,10 @@ def get_movies():
             else None
         )
 
-        preview_poster_base64 = (
-            base64.b64encode(preview_poster_bytes).decode("utf-8")
-            if poster_bytes
-            else None
-        )
-
         movies.append({
             "movie_id": str(movie_id),
             "movie_name": movie_name,
             "movie_poster": poster_base64,
-            "movie_preview_poster": preview_poster_base64
         })
 
     return jsonify(movies), 200
@@ -283,7 +277,9 @@ def get_movie_details(movie_id):
             m.movie_rating,
             m.movie_pg,
             m.movie_release_date,
-            amd.movie_trailer
+            amd.movie_trailer,
+            amd.movie_poster,
+            amd.movie_preview_poster
         FROM "MOVIES" m
         LEFT JOIN "ADDITIONAL_MOVIE_DATA" amd ON amd.movie_id = m.movie_id
         WHERE m.movie_id = %s
@@ -295,7 +291,7 @@ def get_movie_details(movie_id):
         conn.close()
         return jsonify({"error": "Movie not found"}), 404
 
-    description, rating, pg, release_date, trailer_url = movie_data
+    description, rating, pg, release_date, trailer_url, movie_poster, movie_preview_poster = movie_data
 
     # 2. Gatunki
     cur.execute("""
@@ -327,6 +323,18 @@ def get_movie_details(movie_id):
     cur.close()
     conn.close()
 
+    poster_base64 = (
+        base64.b64encode(movie_poster).decode("utf-8")
+        if movie_poster
+        else None
+    )
+
+    preview_poster_base64 = (
+        base64.b64encode(movie_preview_poster).decode("utf-8")
+        if movie_preview_poster
+        else None
+    )
+
     return jsonify({
         "description": description,
         "rating": rating,
@@ -335,7 +343,141 @@ def get_movie_details(movie_id):
         "trailer_url": trailer_url,
         "genres": genres,
         "actors": actors,
-        "directors": directors
+        "directors": directors,
+        "movie_poster": poster_base64,
+        "movie_preview_poster": preview_poster_base64
+    }), 200
+
+@app.route("/subscriptions/plans", methods=["GET"])
+def get_subscriptions_plans():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            subscription_plan_id,
+            subscription_plan_type,
+            subscription_plan_cost,
+            subscription_plan_description
+        FROM "SERVICE_SUBSCRIPTION_PLANS"
+    """)
+
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    users = []
+    for row in rows:
+        users.append({
+            "id": str(row[0]),
+            "sub_type": row[1],
+            "sub_cost": str(row[2]),
+            "sub_description": row[3],
+        })
+
+    return jsonify(users)
+
+@app.route("/subscriptions/subscribe", methods=["POST"])
+@cross_origin()
+def subscribe_to_plan():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    plan_id = data.get("plan_id")
+
+    if not user_id or not plan_id:
+        return jsonify({"error": "Missing data"}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT subscription_plan_type
+            FROM "SERVICE_SUBSCRIPTION_PLANS"
+            WHERE subscription_plan_id = %s
+        """, (plan_id,))
+
+        plan = cur.fetchone()
+
+        if not plan:
+            return jsonify({"error": "Subscription plan not found"}), 404
+
+        plan_type = plan[0]
+
+        if plan_type.lower() == "free":
+
+            cur.execute("""
+                UPDATE "USERS"
+                SET user_is_subscribed = FALSE,
+                    user_subscription_plan_id = %s
+                WHERE user_id = %s
+            """, (plan_id, user_id))
+
+        else:
+
+            cur.execute("""
+                UPDATE "USERS"
+                SET user_is_subscribed = TRUE,
+                    user_subscription_plan_id = %s
+                WHERE user_id = %s
+            """, (plan_id, user_id))
+
+        conn.commit()
+        return '', 200
+
+    except Exception as e:
+        print("Subscription error:", e)
+        return jsonify({"error": "Internal server error"}), 500
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.route("/subscriptions/is_free/<uuid:user_id>", methods=["GET"])
+def check_user_free(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT user_is_subscribed
+        FROM "USERS"
+        WHERE user_id = %s
+    """, (str(user_id),))
+
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if result is None:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify(not result[0])
+
+
+@app.route("/subscriptions/plan/<uuid:user_id>", methods=["GET"])
+def get_user_subscription_plan(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT s.subscription_plan_type, s.subscription_plan_id
+        FROM "USERS" u
+        LEFT JOIN "SERVICE_SUBSCRIPTION_PLANS" s
+        ON u.user_subscription_plan_id = s.subscription_plan_id
+        WHERE u.user_id = %s
+    """, (str(user_id),))
+
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if not result or result[0] is None:
+        return jsonify(None), 200
+
+    return jsonify({
+        "id": str(result[1]),
+        "sub_type": result[0],
     }), 200
 
 # Endpoint /movies-with-directors

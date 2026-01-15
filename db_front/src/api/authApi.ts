@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tUpdateUserDataResponse } from "../types/authTypes";
+import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tSearchMoviesResponse, tSubscriptionsPlansResponse, tUpdateUserDataResponse } from "../types/authTypes";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -49,9 +49,9 @@ export const authApi = createApi({
       }),
     }),
 
-    searchMovies: builder.query<{ id: string; name: string }[],string>({
+    searchMovies: builder.query<tSearchMoviesResponse, string>({
       query: (query) => ({
-        url: `/search/movies?q=${encodeURIComponent(query)}`,
+        url: `/search/movies?query=${encodeURIComponent(query)}`,
         method: "GET",
       }),
     }),
@@ -69,6 +69,39 @@ export const authApi = createApi({
         method: "GET",
       }),
     }),
+
+    getSubscriptionsPlans : builder.query<tSubscriptionsPlansResponse[], void>({
+      query: () => ({
+        url: `/subscriptions/plans`,
+        method: "GET",
+      }),
+    }),
+
+    subscribeToPlan: builder.mutation<void, { user_id: string, plan_id: string }>({
+      query: ({ user_id, plan_id }) => ({
+        url: `/subscriptions/subscribe`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id, plan_id }),
+      }),
+    }),
+
+    checkIfUserIsFree: builder.query<boolean, string>({
+      query: (userId) => ({
+        url: `/subscriptions/is_free/${userId}`,
+        method: "GET",
+      }),
+    }),
+
+    getUserSubscriptionPlan: builder.query<{ id: string, sub_type: string } | null, string>({
+      query: (userId) => ({
+        url: `/subscriptions/plan/${userId}`,
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
@@ -77,5 +110,9 @@ export const {  useRegisterUserMutation,
                 useGetMoviesQuery, 
                 useGetMovieDetailsQuery,
                 useUpdateUserProfileMutation,
-                useSearchMoviesQuery 
+                useSearchMoviesQuery,
+                useGetSubscriptionsPlansQuery,
+                useSubscribeToPlanMutation,
+                useCheckIfUserIsFreeQuery,
+                useGetUserSubscriptionPlanQuery
         } = authApi;

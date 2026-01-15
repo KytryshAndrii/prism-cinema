@@ -4,7 +4,7 @@ import { useGetMovieDetailsQuery } from "../../api/authApi";
 
 export const useFilmDetailsRender = () => {
 
-  const { id, name, poster, preview_poster } = useSelector((state: AppState) => state.film);
+  const { id, name} = useSelector((state: AppState) => state.film);
   const {
     data: details,
   } = useGetMovieDetailsQuery(id!, { skip: !id });
@@ -15,10 +15,14 @@ export const useFilmDetailsRender = () => {
     return match ? `https://www.youtube.com/embed/${match[1]}` : url;
   }
 
+  const createImg = (img: string | null) => {
+    if (img) return `data:image/jpeg;base64,${img}`
+  }
+
   return {
     title: name,
-    poster,
-    backdrop: preview_poster,
+    poster: createImg(details?.movie_poster || null),
+    backdrop: createImg(details?.movie_preview_poster || null),
     trailerUrl: details?.trailer_url ? formatYouTubeUrl(details.trailer_url) : "",
     description: details?.description || "",
     cast: details?.actors || [],
@@ -27,6 +31,6 @@ export const useFilmDetailsRender = () => {
     pg: details?.pg || "",
     release_date: details?.release_date || "",
     rating: details?.rating || "",
-    isLiked: true
+    isLiked: false
   };
 };
