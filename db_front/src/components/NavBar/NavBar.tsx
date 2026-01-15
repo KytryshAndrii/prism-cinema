@@ -1,5 +1,5 @@
 import type React from "react";
-import { Brand, NavbarBox, NavButtons, SearchInput, ToolbarStyled, SingleNavButton, BrandWithAvatarButtons, UserAvatar } from "./styles";
+import { Brand, NavbarBox, NavButtons, ToolbarStyled, SingleNavButton, BrandWithAvatarButtons } from "./styles";
 import SignUpModal from "./Register/SignUpModal";
 import SignInForm from "./Sign/SignInForm";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +8,14 @@ import type { AppState } from "../../store/store";
 import { useAuthForms } from "../../context/AuthFormContext";
 import UserDropdown from "./UserDropdown/UserDropdown";
 import SearchBar from "./SearchBar/SearchBar";
+import { AdminCutIcon } from "../../icons/icons";
 
 const NavBar: React.FC = () => {
 
     const { isSignInOpen, isSignUpOpen, toggleSignInForm, toggleSignUpForm } = useAuthForms();
 
   const navigate = useNavigate();
-  const { isLoggedIn, login } = useSelector((state: AppState) => state.user);
+  const { isUserAdmin, isLoggedIn, login } = useSelector((state: AppState) => state.user);
 
      return (
       <>
@@ -26,7 +27,10 @@ const NavBar: React.FC = () => {
             </Brand>
             {isLoggedIn? 
               ( 
-                <UserDropdown userLogin={login || ""}/>
+                <>
+                  <UserDropdown userLogin={login || ""}/>
+                  {isUserAdmin? <AdminCutIcon/> : <></>}
+                </>
               ): <></>}
             </BrandWithAvatarButtons>
            {isLoggedIn ? (

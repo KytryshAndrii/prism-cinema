@@ -8,6 +8,7 @@ import FilmDetails from './components/FilmDetails/FilmDetails';
 import SubscriptionsPlans from './components/SubscriptionsPlans/SubscriptionsPlans';
 import { AuthFormsProvider } from './context/AuthFormContext';
 import UserProfile from './components/AccountDetails/User/UserProfile';
+import FavouritesMovies from './components/FavouritesMovies/FavouritesMovies';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/films" element={<MainPage />} />
           <Route path="/film_entity" element={<FilmDetails/>}/>
+          <Route path="/likes" element={<FavouritesMovies/>}/>
           <Route path="/subscriptions" element={<SubscriptionsPlans/>}/>
           <Route path="/profile" element={<UserProfile/>}/>
         </Routes>

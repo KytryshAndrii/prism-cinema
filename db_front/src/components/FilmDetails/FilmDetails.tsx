@@ -33,7 +33,7 @@ import { useSelector } from "react-redux";
 import { HeartIcon } from "../../icons/icons";
 
 const FilmDetails: React.FC = () => {
-  const film = useFilmDetailsRender();
+  const {movieMeta, toggleLikeMovie} = useFilmDetailsRender();
   const user = useSelector((state: AppState) => state.user);
   const [view, setView] = useState<"movie" | "trailer">("trailer");
   const [activeTab, setActiveTab] = useState<"cast" | "genres" | "directors">("cast");
@@ -41,24 +41,24 @@ const FilmDetails: React.FC = () => {
   return (
     <PageWrapper>
       <BackdropWrapper>
-        <BackdropImage src={film.backdrop!} />
+        <BackdropImage src={movieMeta.backdrop!} />
         <BackdropGradient />
       </BackdropWrapper>
 
       <ContentWrapper>
         <InfoGrid>  
-            <Poster src={film.poster!} />
+            <Poster src={movieMeta.poster!} />
           <div>
-            <Title>{film.title}</Title>
+            <Title>{movieMeta.title}</Title>
             <RowRating>
-              <RatingWrapper><RateStar/> <strong>{film.rating}/10</strong></RatingWrapper>
-              <PgBadge pg={film.pg}>{film.pg}</PgBadge>
+              <RatingWrapper><RateStar/> <strong>{movieMeta.rating}/10</strong></RatingWrapper>
+              <PgBadge pg={movieMeta.pg}>{movieMeta.pg}</PgBadge>
             </RowRating>
-            {film.description ? (
+            {movieMeta.description ? (
               <GeneralDataWrapper>
-                <Description>{film.description}</Description>
+                <Description>{movieMeta.description}</Description>
                 <Description>
-                  Release: <strong>{film.release_date}</strong>
+                  Release: <strong>{movieMeta.release_date}</strong>
                 </Description>
               </GeneralDataWrapper>
               ): (
@@ -88,9 +88,9 @@ const FilmDetails: React.FC = () => {
             </ToggleRow>
 
             <ChipsRow>
-              {film.cast.length || film.description.length || film.directors.length ? 
+              {movieMeta.cast.length || movieMeta.description.length || movieMeta.directors.length ? 
               (
-                <>{(activeTab === "cast" ? film.cast : activeTab === "directors" ? film.directors : film.genres).map(
+                <>{(activeTab === "cast" ? movieMeta.cast : activeTab === "directors" ? movieMeta.directors : movieMeta.genres).map(
                 (item) => (
                   <Chip key={item}>{item}</Chip>
                 ))}
@@ -104,9 +104,9 @@ const FilmDetails: React.FC = () => {
         </InfoGrid>
         <TrailerWrapper>
           {view === "trailer" || !user.isUserSubscribed ? (
-            film.trailerUrl ? (
+            movieMeta.trailerUrl ? (
               <iframe
-                src={film.trailerUrl}
+                src={movieMeta.trailerUrl}
                 title="Movie trailer"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -128,7 +128,7 @@ const FilmDetails: React.FC = () => {
         </TrailerWrapper>
         {user.isUserSubscribed && (
           <ActionsPanel>
-            <LikeButton active={film.isLiked}>
+            <LikeButton active={movieMeta.isLiked} onClick={toggleLikeMovie}>
               <HeartIcon />
                 Like
             </LikeButton>

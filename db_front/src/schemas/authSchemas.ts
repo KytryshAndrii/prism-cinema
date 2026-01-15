@@ -5,10 +5,14 @@ export const loginRequestSchema = z.object({
   password: z.string().min(6),
 });
 
-export const registerRequestSchema = loginRequestSchema.extend({
+export const registerFormSchema = loginRequestSchema.extend({
   email: z.string(),
-  dateOfBirth: z.string(),
+  dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
+
+export const registerRequestSchema = registerFormSchema.extend({
+  region: z.string(),
+})
 
 export const authResponseSchema = z.object({
   id: z.string(),
@@ -49,7 +53,6 @@ export const movieDetailsResponseSchema = z.object({
   directors: z.array(z.string()),
   movie_preview_poster: z.string(),
   movie_poster: z.string(),
-
 });
 
 const searchMovieResponse = z.object({ 
@@ -65,3 +68,18 @@ export const subscriptionsPlansResponseSchema = z.object({
   sub_cost:z.string(),
   sub_description:z.string()
 })
+
+export const userSubscriptionPlanMetaDataResponseSchema = z.object({ 
+  id: z.string(), 
+  sub_type: z.string() 
+})
+
+export const userToPlanSubscriptionRequestSchema = z.object({
+    user_id: z.string(), 
+    plan_id: z.string() 
+})
+
+export const favMovieRequestSchema = z.object({
+  user_id: z.string(),
+  movie_id: z.string(),
+});

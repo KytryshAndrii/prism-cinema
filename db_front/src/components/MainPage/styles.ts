@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { HeartIcon } from '../../icons/icons';
 
 export const Container = styled(Box)({
   display: 'flex',
@@ -36,14 +37,15 @@ export const FilmsGrid = styled(Box)({
 });
 
 export const FilmCard = styled(Box)({
-  cursor: 'pointer',
-  borderRadius: '0.5rem',
-  overflow: 'hidden',
-  backgroundColor: '#111',
-  boxShadow: '0 0.125rem 0.5rem rgba(0,0,0,0.5)',
-  transition: 'transform 0.2s',
-  '&:hover': {
-    transform: 'scale(1.05)',
+  position: "relative",
+  cursor: "pointer",
+  borderRadius: "0.5rem",
+  overflow: "hidden",
+  backgroundColor: "#111",
+  boxShadow: "0 0.125rem 0.5rem rgba(0,0,0,0.5)",
+  transition: "transform 0.2s",
+  "&:hover": {
+    transform: "scale(1.05)",
   },
 });
 
@@ -63,4 +65,21 @@ export const FilmTitle = styled(Box)({
   fontSize: '1rem',
   color: '#fff',
   fontWeight: 'bold',
+});
+
+
+export const LikeButtonOverlay = styled(Box)({
+  position: "absolute",
+  top: "67%",
+  left: "72%",
+  zIndex: 2,
+  backgroundColor: "rgba(0,0,0,0.5)",
+  borderRadius: "1rem",
+  padding: "0.5rem",
+  cursor: "pointer",
+});
+
+export const HeartLikeIcon = styled(HeartIcon)({
+  color: "#e53935",
+  fontSize: "2rem",
 });

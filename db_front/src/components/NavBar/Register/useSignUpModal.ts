@@ -1,32 +1,39 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerRequestSchema } from "../../../schemas/authSchemas";
-import { useRegisterUserMutation } from "../../../api/authApi";
-import type { tRegisterForm } from "./types";
+import { registerFormSchema} from "../../../schemas/authSchemas";
+import { useRegisterUserMutation, useSubscribeToPlanMutation } from "../../../api/authApi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logIn } from "../../../store/userSlice";
+import { logIn, subscribe } from "../../../store/userSlice";
 import { useState } from "react";
+import { useAuthForms } from "../../../context/AuthFormContext";
+import { getRegionFromLocale } from "../../../utils/utils";
+import type { tRegisterForm } from "../../../types/authTypes";
 
 export const useSignUpModal = (onClose: () => void) => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { pendingPlanId, setPendingPlanId } = useAuthForms();
+
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [subscribeToPlan] = useSubscribeToPlanMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<tRegisterForm>({
-    resolver: zodResolver(registerRequestSchema),
+    resolver: zodResolver(registerFormSchema),
     mode: "onTouched",
   });
 
    const onSubmit = async (formData: tRegisterForm) => {
     setErrorMessage(null); 
+    const region = getRegionFromLocale();
     try {
-      const result = await registerUser(formData).unwrap();
+      const result = await registerUser({...formData, region}).unwrap();
 
       dispatch(
         logIn({
@@ -35,12 +42,27 @@ export const useSignUpModal = (onClose: () => void) => {
           email: result.email,
           token: result.token,
           birthday: formData.dateOfBirth,
-          region: "PL",
+          region: region,
           isLoggedIn: true,
-          isUserSubscribed: false ,
+          isUserSubscribed: false,
           isUserAdmin: false,
         })
       );
+
+      if (pendingPlanId) {
+        try {
+          await subscribeToPlan({
+            user_id: result.id,
+            plan_id: pendingPlanId
+          }).unwrap();
+
+          dispatch(subscribe());
+          setPendingPlanId(null);
+        } catch {
+          console.error("Auto subscription failed");
+        }
+      }
+
 
       onClose();
       navigate("/films");

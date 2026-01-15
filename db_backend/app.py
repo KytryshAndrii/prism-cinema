@@ -27,6 +27,7 @@ def register_user():
     password = data.get("password").encode("utf-8")
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode("utf-8")
     date_of_birth = data.get("dateOfBirth")
+    region = data.get("region") or " "
 
     conn = get_connection()
     cur = conn.cursor()
@@ -44,6 +45,17 @@ def register_user():
         conn.close()
         return jsonify(None), 409  # Conflict
 
+    cur.execute("""
+                SELECT subscription_plan_id FROM "SERVICE_SUBSCRIPTION_PLANS"
+                WHERE subscription_plan_type = 'Free'
+                LIMIT 1
+            """)
+    free_plan = cur.fetchone()
+    if not free_plan:
+        return jsonify({"error": "No Free plan found"}), 500
+
+    free_plan_id = free_plan[0]
+
     # Create new user
     new_user_id = str(uuid.uuid4())
 
@@ -51,11 +63,12 @@ def register_user():
             INSERT INTO "USERS" (
                 user_id, user_login, user_mail,
                 user_password, user_is_admin,
-                user_is_subscribed, user_location_region,
+                user_is_subscribed, user_subscription_plan_id,
+                user_location_region,
                 user_date_of_birth
             )
-            VALUES (%s, %s, %s, %s, FALSE, FALSE, %s, %s)
-        """, (new_user_id, login, email, hashed_password, "PL", date_of_birth))
+            VALUES (%s, %s, %s, %s, FALSE, FALSE, %s, %s, %s)
+        """, (new_user_id, login, email, hashed_password, free_plan_id, str(region), date_of_birth))
 
     conn.commit()
     cur.close()
@@ -479,6 +492,122 @@ def get_user_subscription_plan(user_id):
         "id": str(result[1]),
         "sub_type": result[0],
     }), 200
+
+@app.route("/movies/fav/<uuid:user_id>", methods=["GET"])
+@token_required
+def get_user_fav_movies(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            m.movie_id,
+            m.movie_name,
+            amd.movie_poster
+        FROM "FAVOURITE_MOVIES" fm
+        JOIN "MOVIES" m ON fm.movie_id = m.movie_id
+        LEFT JOIN "ADDITIONAL_MOVIE_DATA" amd ON amd.movie_id = m.movie_id
+        WHERE fm.user_id = %s
+    """, (str(user_id),))
+
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    movies = []
+    for row in rows:
+        movie_id, movie_name, poster_bytes = row
+        poster_base64 = base64.b64encode(poster_bytes).decode("utf-8") if poster_bytes else None
+        movies.append({
+            "movie_id": str(movie_id),
+            "movie_name": movie_name,
+            "movie_poster": poster_base64,
+        })
+
+    return jsonify(movies), 200
+
+@app.route("/movies/fav/add", methods=["POST"])
+@token_required
+def add_movie_to_favorites():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    movie_id = data.get("movie_id")
+
+    if not user_id or not movie_id:
+        return jsonify({"error": "Missing data"}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO "FAVOURITE_MOVIES" (user_id, movie_id)
+        VALUES (%s, %s)
+        ON CONFLICT DO NOTHING
+    """, (user_id, movie_id))
+
+    conn.commit()
+
+    inserted = cur.rowcount
+
+    cur.close()
+    conn.close()
+
+    if inserted == 0:
+        return jsonify({"message": "Already in favourites"}), 409
+
+    return jsonify({"message": "Added to favourites"}), 200
+
+@app.route("/movies/fav/remove", methods=["POST"])
+@token_required
+def remove_movie_from_favorites():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    movie_id = data.get("movie_id")
+
+    if not user_id or not movie_id:
+        return jsonify({"error": "Missing data"}), 400
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        DELETE FROM "FAVOURITE_MOVIES"
+        WHERE user_id = %s AND movie_id = %s
+    """, (user_id, movie_id))
+
+    conn.commit()
+
+    deleted = cur.rowcount   # how many rows deleted
+
+    cur.close()
+    conn.close()
+
+    if deleted == 0:
+        return jsonify({"message": "Movie not found in favourites"}), 404
+
+    return jsonify({"message": "Removed from favourites"}), 200
+
+@app.route("/movies/fav/check", methods=["POST"])
+def is_movie_favorited():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    movie_id = data.get("movie_id")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT 1 FROM "FAVOURITE_MOVIES"
+        WHERE user_id = %s AND movie_id = %s
+    """, (user_id, movie_id))
+
+    exists = cur.fetchone() is not None
+
+    cur.close()
+    conn.close()
+
+    return jsonify({"is_favorite": exists}), 200
+
 
 # Endpoint /movies-with-directors
 @app.route("/api/views/movies_with_directors", methods=["GET"])

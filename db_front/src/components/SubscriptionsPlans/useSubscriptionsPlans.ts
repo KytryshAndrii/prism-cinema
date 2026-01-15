@@ -13,7 +13,7 @@ import { useState } from "react";
 
 export const useSubscriptionsPlans = () => {
   const dispatch = useDispatch();
-  const { toggleSignUpForm } = useAuthForms();
+  const { setPendingPlanId, toggleSignUpForm } = useAuthForms();
   const { id: userId, isLoggedIn } = useSelector((state: AppState) => state.user);
 
   const [alert, setAlert] = useState<{
@@ -42,8 +42,9 @@ export const useSubscriptionsPlans = () => {
 
   const handleSubscribe = async (plan: tSubscriptionPlan) => {
     if (!isLoggedIn) {
-      toggleSignUpForm();
-      return;
+        setPendingPlanId(plan.id);
+        toggleSignUpForm();
+        return;
     }
 
     try {

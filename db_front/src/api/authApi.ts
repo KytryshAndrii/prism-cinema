@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { tAuthResponse, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tSearchMoviesResponse, tSubscriptionsPlansResponse, tUpdateUserDataResponse } from "../types/authTypes";
+import type { tAuthResponse, tFavMovieRequest, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tSearchMoviesResponse, tSubscriptionsPlansResponse, tUpdateUserDataResponse, tUserSubscriptionPlanMetaDataResponse, tUserToPlanSubscriptionRequest} from "../types/authTypes";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -40,7 +40,7 @@ export const authApi = createApi({
 
     updateUserProfile: builder.mutation<void, tUpdateUserDataResponse>({
       query: ({ userId, ...body }) => ({
-        url: `/user_update/${userId}`,
+        url: `/update/user/${userId}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export const authApi = createApi({
       }),
     }),
 
-    subscribeToPlan: builder.mutation<void, { user_id: string, plan_id: string }>({
+    subscribeToPlan: builder.mutation<void, tUserToPlanSubscriptionRequest>({
       query: ({ user_id, plan_id }) => ({
         url: `/subscriptions/subscribe`,
         method: "POST",
@@ -95,13 +95,44 @@ export const authApi = createApi({
       }),
     }),
 
-    getUserSubscriptionPlan: builder.query<{ id: string, sub_type: string } | null, string>({
+    getUserSubscriptionPlan: builder.query<tUserSubscriptionPlanMetaDataResponse | null, string>({
       query: (userId) => ({
         url: `/subscriptions/plan/${userId}`,
         method: "GET",
       }),
     }),
 
+    getUserFavouriteMovies: builder.query<tMovieResponse[], string>({
+      query: (userId) => `/movies/fav/${userId}`,
+    }),
+
+    addMovieToFavourites: builder.mutation<void, tFavMovieRequest>({
+      query: (body) => ({
+        url: `/movies/fav/add`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      }),
+    }),
+    removeMovieFromFavourites: builder.mutation<void, tFavMovieRequest>({
+      query: (body) => ({
+        url: `/movies/fav/remove`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      }),
+    }),
+
+    checkIfMovieIsFavourite: builder.mutation<{ is_favorite: boolean }, tFavMovieRequest>({
+      query: (body) => ({
+        url: "/movies/fav/check",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      }),
+    }),
   }),
 });
 
@@ -114,5 +145,9 @@ export const {  useRegisterUserMutation,
                 useGetSubscriptionsPlansQuery,
                 useSubscribeToPlanMutation,
                 useCheckIfUserIsFreeQuery,
-                useGetUserSubscriptionPlanQuery
+                useGetUserSubscriptionPlanQuery,
+                useGetUserFavouriteMoviesQuery,
+                useAddMovieToFavouritesMutation,
+                useRemoveMovieFromFavouritesMutation,
+                useCheckIfMovieIsFavouriteMutation,
         } = authApi;

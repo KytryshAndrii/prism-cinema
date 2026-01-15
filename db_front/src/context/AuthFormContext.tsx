@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState } from "react";
 type tAuthFormsContextType = {
   isSignInOpen: boolean;
   isSignUpOpen: boolean;
+  pendingPlanId: string | null;
   toggleSignInForm: () => void;
   toggleSignUpForm: () => void;
+  setPendingPlanId: (id: string | null) => void;
 };
 
 const AuthFormsContext = createContext<tAuthFormsContextType | undefined>(undefined);
@@ -12,6 +14,7 @@ const AuthFormsContext = createContext<tAuthFormsContextType | undefined>(undefi
 export const AuthFormsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [pendingPlanId, setPendingPlanId] = useState<string | null>(null);
 
   const toggleSignInForm = () => setIsSignInOpen(prev => !prev);
   const toggleSignUpForm = () => setIsSignUpOpen(prev => !prev);
@@ -20,8 +23,10 @@ export const AuthFormsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     <AuthFormsContext.Provider value={{
       isSignInOpen,
       isSignUpOpen,
+      pendingPlanId,
       toggleSignInForm,
-      toggleSignUpForm
+      toggleSignUpForm,
+      setPendingPlanId,
     }}>
       {children}
     </AuthFormsContext.Provider>
