@@ -4,7 +4,7 @@ import psycopg2
 app = Flask(__name__)
 
 # --- Database configuration ---
-DB_HOST = "db"
+DB_HOST = "utils"
 DB_NAME = "funnydb"
 DB_USER = "postgres"
 DB_PASS = "root"
