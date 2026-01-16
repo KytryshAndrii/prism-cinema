@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { tAuthResponse, tFavMovieRequest, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tSearchMoviesResponse, tSubscriptionsPlansResponse, tUpdateUserDataResponse, tUserSubscriptionPlanMetaDataResponse, tUserToPlanSubscriptionRequest} from "../types/authTypes";
+import type { tAuthResponse, tEntityResponse, tFavMovieRequest, tLoginRequest, tMovieDetailsResponse, tMovieResponse, tRegisterRequest, tRootState, tSearchMoviesResponse, tSubscriptionsPlansResponse, tUpdateUserDataResponse, tUserSubscriptionPlanMetaDataResponse, tUserToPlanSubscriptionRequest} from "../types/authTypes";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -133,6 +133,18 @@ export const authApi = createApi({
         body,
       }),
     }),
+
+    getActorEntity: builder.query<tEntityResponse, string>({
+      query: (name) => `/entity/actor/${encodeURIComponent(name)}`
+    }),
+
+    getDirectorEntity: builder.query<tEntityResponse, string>({
+      query: (name) => `/entity/director/${encodeURIComponent(name)}`
+    }),
+
+    getGenreEntity: builder.query<tEntityResponse, string>({
+      query: (name) => `/entity/genre/${encodeURIComponent(name)}`
+    }),
   }),
 });
 
@@ -150,4 +162,7 @@ export const {  useRegisterUserMutation,
                 useAddMovieToFavouritesMutation,
                 useRemoveMovieFromFavouritesMutation,
                 useCheckIfMovieIsFavouriteMutation,
+                useGetActorEntityQuery,
+                useGetDirectorEntityQuery,
+                useGetGenreEntityQuery
         } = authApi;
