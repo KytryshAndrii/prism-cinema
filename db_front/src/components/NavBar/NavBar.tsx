@@ -1,41 +1,60 @@
 import type React from "react";
-import { Brand, NavbarBox, NavButtons, SearchInput, ToolbarStyled, SingleNavButton } from "./styles";
+import { Brand, NavbarBox, NavButtons, ToolbarStyled, SingleNavButton, BrandWithAvatarButtons } from "./styles";
 import SignUpModal from "./Register/SignUpModal";
-import { useNavBar } from "./useNavBar";
 import SignInForm from "./Sign/SignInForm";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import type { AppState } from "../../store/store";
+import { useAuthForms } from "../../context/AuthFormContext";
+import UserDropdown from "./UserDropdown/UserDropdown";
+import SearchBar from "./SearchBar/SearchBar";
+import { AdminCutIcon } from "../../icons/icons";
 
 const NavBar: React.FC = () => {
 
-  const {  isSignUpOpen,
-        isSignInOpen,
-        toggleSignInForm,
-        toggleSignUpForm} = useNavBar();
+    const { isSignInOpen, isSignUpOpen, toggleSignInForm, toggleSignUpForm } = useAuthForms();
 
   const navigate = useNavigate();
+  const { isUserAdmin, isLoggedIn, login } = useSelector((state: AppState) => state.user);
 
      return (
       <>
         <NavbarBox>
           <ToolbarStyled>
-            <Brand onClick={() => navigate("/")}>
+           <BrandWithAvatarButtons> 
+            <Brand onClick={() => {if (!isLoggedIn) navigate("/")}}>
               PRISM<span>.</span>CINEMA
             </Brand>
-             {isSignInOpen ? (
+            {isLoggedIn? 
+              ( 
+                <>
+                  <UserDropdown userLogin={login || ""}/>
+                  {isUserAdmin? <AdminCutIcon/> : <></>}
+                </>
+              ): <></>}
+            </BrandWithAvatarButtons>
+           {isLoggedIn ? (
+            <NavButtons>
+              <SingleNavButton onClick={() => navigate("/likes")}>LIKES</SingleNavButton>
+              <SingleNavButton onClick={() => navigate("/films")}>FILMS</SingleNavButton>
+              <SearchBar/>
+            </NavButtons>
+          ) : isSignInOpen ? (
             <SignInForm isOpen={isSignInOpen} onClose={toggleSignInForm} />
           ) : (
             <NavButtons>
               <SingleNavButton onClick={toggleSignInForm}>SIGN IN</SingleNavButton>
               <SingleNavButton onClick={toggleSignUpForm}>CREATE ACCOUNT</SingleNavButton>
               <SingleNavButton onClick={() => navigate("/films")}>FILMS</SingleNavButton>
-              <SearchInput placeholder="Search..." />
+              <SingleNavButton onClick={() => navigate("/subscriptions")}>SUBSCRIPTIONS</SingleNavButton>
+              <SearchBar/>
             </NavButtons>
           )}
-          </ToolbarStyled>
-        </NavbarBox>
-        <SignUpModal isOpen={isSignUpOpen} onClose={toggleSignUpForm} />
-      </>
+        </ToolbarStyled>
+      </NavbarBox>
+
+      <SignUpModal isOpen={isSignUpOpen} onClose={toggleSignUpForm} />
+    </>
   );
 };
 

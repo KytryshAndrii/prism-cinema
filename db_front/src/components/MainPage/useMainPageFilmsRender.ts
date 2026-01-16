@@ -1,11 +1,17 @@
-import { useMemo } from 'react';
+import { useGetMoviesQuery } from "../../api/authApi";
 
 export const useMainPageFilmsRender = () => {
-  return useMemo(() => {
-    return Array.from({ length: 20 }, (_, i) => ({
-      id: i + 1,
-      title: `Film ${i + 1}`,
-      imageUrl: `src/assets/poster.jpg`, 
-    }));
-  }, []);
+  const { data, isLoading, isError } = useGetMoviesQuery();
+
+  const films = (data || []).map((movie) => ({
+    id: movie.movie_id,
+    title: movie.movie_name,
+    imageUrl: `data:image/jpeg;base64,${movie.movie_poster}`,
+  }));
+
+  return {
+    films,
+    isLoading,
+    isError,
+  };
 };
