@@ -22,7 +22,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - DB_HOST=db
+      - DB_HOST=utils
       - DB_NAME=funnydb
       - DB_USER=postgres
       - DB_PASS=root

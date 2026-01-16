@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, InputBase, Button } from '@mui/material';
+import { AppBar, Toolbar, InputBase, Button, Box } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
 export const NavbarBox = styled(AppBar)(() => ({
@@ -16,7 +16,7 @@ export const ToolbarStyled = styled(Toolbar)({
 });
 
 
-export const Brand = styled('div')(() => ({
+export const Brand = styled(Box)(() => ({
   fontSize: '1.4rem',
   fontWeight: 'bold',
   color: '#ffffff',
@@ -26,11 +26,31 @@ export const Brand = styled('div')(() => ({
   cursor: 'pointer'
 }));
 
-export const NavButtons = styled('div')({
+export const NavButtons = styled(Box)({
   display: 'flex',
   gap: '1rem',
   alignItems: 'center',
 });
+
+export const UserAvatar = styled(Box)({
+  display:"flex",
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: "1rem",
+  color: '#fff',
+  fontSize: '1.2rem',
+  fontWeight: 'bold',
+  cursor:"pointer"
+})
+
+export const BrandWithAvatarButtons = styled(Box)({
+  display:"flex",
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: "3rem"
+})
 
 export const SingleNavButton =  styled(Button)({
   color: '#fff',

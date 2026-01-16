@@ -11,7 +11,7 @@ const HomePage: React.FC = () => {
     return ( <>
       <HomeWrapper>
         <ImageBox>
-          <img src={image} alt="Cinema scene" style={{ width: '100%', display: 'block' }} />
+          <img src={image} alt="Cinema scene" style={{ width: '100%', display: 'block', borderRadius: '1rem' }} />
           <OverlayText>
             <Typography variant="h4" fontWeight="bold">
               WELCOME TO PRISM<span>.</span>CINEMA
