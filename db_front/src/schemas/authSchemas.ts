@@ -83,3 +83,16 @@ export const favMovieRequestSchema = z.object({
   user_id: z.string(),
   movie_id: z.string(),
 });
+
+export const movieEnitySchema = z.object({
+  movie_id: z.string(),
+  movie_name: z.string(),
+})
+
+export const entityResponseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  birthplace: z.string().optional(),
+  description: z.string().optional(),
+  movies: movieEnitySchema.array(),
+})

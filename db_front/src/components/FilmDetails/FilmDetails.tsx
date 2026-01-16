@@ -31,12 +31,22 @@ import { Skeleton } from "@mui/material";
 import type { AppState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { HeartIcon } from "../../icons/icons";
+import { useEntityModal, type EntityType } from "./EntityModal/useEntityModal";
+import EntityModal from "./EntityModal/EntityModal";
 
 const FilmDetails: React.FC = () => {
   const {movieMeta, toggleLikeMovie} = useFilmDetailsRender();
   const user = useSelector((state: AppState) => state.user);
   const [view, setView] = useState<"movie" | "trailer">("trailer");
-  const [activeTab, setActiveTab] = useState<"cast" | "genres" | "directors">("cast");
+  const [activeTab, setActiveTab] = useState<EntityType>("cast");
+
+  const {
+    open,
+    modalTitle,
+    entityData,
+    handleOpen,
+    handleClose,
+  } = useEntityModal();
 
   return (
     <PageWrapper>
@@ -92,7 +102,12 @@ const FilmDetails: React.FC = () => {
               (
                 <>{(activeTab === "cast" ? movieMeta.cast : activeTab === "directors" ? movieMeta.directors : movieMeta.genres).map(
                 (item) => (
-                  <Chip key={item}>{item}</Chip>
+                  <Chip
+                    key={item}
+                    onClick={() => handleOpen(item, activeTab)}
+                    >
+                    {item}
+                  </Chip>
                 ))}
                 </>
               ):(
@@ -100,6 +115,12 @@ const FilmDetails: React.FC = () => {
               )
               }
             </ChipsRow>
+            <EntityModal
+              open={open}
+              onClose={handleClose}
+              title={modalTitle}
+              data={entityData}
+            />
           </div>
         </InfoGrid>
         <TrailerWrapper>
