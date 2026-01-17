@@ -7,9 +7,9 @@ from search_entities import search_entities
 import uuid
 import base64
 
-from db_backend.auth_utils import generate_token
-from db_backend.token_validation import token_required
-from service.user import register_user_logic
+from auth_utils import generate_token
+from token_validation import token_required
+from db_backend.service.user import register_user_logic
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})

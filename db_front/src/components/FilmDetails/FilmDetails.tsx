@@ -116,7 +116,7 @@ const FilmDetails: React.FC = () => {
               }
             </ChipsRow>
             <EntityModal
-              open={open}
+              open={open && !!entityData}
               onClose={handleClose}
               title={modalTitle}
               data={entityData}

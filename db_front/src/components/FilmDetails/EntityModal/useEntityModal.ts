@@ -16,11 +16,8 @@ export const useEntityModal = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = (name: string, type: EntityType) => {
-    setSelectedEntity(null); 
+    setSelectedEntity({ name, type });
     setOpen(true);
-    setTimeout(() => {
-      setSelectedEntity({ name, type });
-    }, 0);
   };
 
   const handleClose = () => {
@@ -45,22 +42,22 @@ export const useEntityModal = () => {
 
   let entityData = null;
 
-   switch (selectedEntity?.type) {
-        case "cast":
-            entityData = actorQuery.data;
-            break;
+switch (selectedEntity?.type) {
+  case "cast":
+    entityData = actorQuery.data ?? null;
+    break;
 
-        case "directors":
-            entityData = directorQuery.data;
-            break;
+  case "directors":
+    entityData = directorQuery.data ?? null;
+    break;
 
-        case "genres":
-            entityData = genreQuery.data;
-            break;
+  case "genres":
+    entityData = genreQuery.data ?? null;
+    break;
 
-        default:
-            entityData = null;
-    }
+  default:
+    entityData = null;
+}
   return {
     open,
     modalTitle: selectedEntity?.name || "",
