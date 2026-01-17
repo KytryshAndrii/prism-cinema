@@ -5,91 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cd587a4-6250-43d8-9983-8eabbff4989d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/ks_bd.eYoZBg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/ks_bd.eYoZBg/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/ks_bd.eYoZBg/schema/public.abK9xQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bb934f42-f477-474b-9a84-8a59399ceb1c/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sem5-bd2-online-cinema.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SQL/sql.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/actors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/additional_movie_data.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/db_photo_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/directors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/fav_movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/genres.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/highest_ratest_movies_widok.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/indeksy.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/licences.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movie_actors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movie_directors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movie_genres.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movie_licenses.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movie_localisations.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movies_languages_info.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movies_with_actors_widok.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/movies_with_directors_widok.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/actors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/additional_movie_data.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/directors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/favourite_movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/genres.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/highest_rate_movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/licenses.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movie_actors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movie_directors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movie_genres.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movie_licenses.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movie_localizations.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movies_language_info.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movies_with_actors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/movies_with_directors.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/service_subscription_plans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/user_favourites_movies.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/query_screenshots/users.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/service_sub_plans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/user_fav_movies_widok.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_db_photo/users_table.png" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/db_backend/service/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db_backend/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db_backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db_backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db_backend/search_entities.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/search_entities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_backend/service/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/db_backend/service/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/service/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_backend/utils/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_front/src/components/FilmDetails/EntityModal/useEntityModal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/components/FilmDetails/EntityModal/useEntityModal.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_front/src/components/FilmDetails/FilmDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/components/FilmDetails/FilmDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql_backup_with_data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/actors_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/additional_movie_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/directors_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/genres_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/join_tables_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/licenses_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/movie_localization_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/movies_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/subscriptions_plans_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumb_data_generation/users_dumb_data_generation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dumn_data_importing.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/TestIndexPerformance.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/TestPerformanceInsertSelect.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/TestTablePermissions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/dbUnitTests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/uuidToString.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

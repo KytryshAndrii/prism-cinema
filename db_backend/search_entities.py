@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from db_backend.utils.connection import get_connection
+from utils.connection import get_connection
 
 def search_entities(table_name):
     query = request.args.get("query", "")

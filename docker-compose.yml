@@ -24,9 +24,9 @@ services:
       FLASK_ENV: development
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: prism
+      DB_NAME: ks_bd
       DB_USER: postgres
-      DB_PASS: postgres
+      DB_PASS: root
 
   frontend:
     build: ./db_front

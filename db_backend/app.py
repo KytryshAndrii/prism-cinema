@@ -9,13 +9,14 @@ import base64
 
 from auth_utils import generate_token
 from token_validation import token_required
-from db_backend.service.user import register_user_logic
+from service.user import register_user_logic
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Endpoint testowy /health
 @app.route("/health", methods=["GET"])
+@cross_origin()
 def health():
     return {"status": "ok"}
 
@@ -130,6 +131,7 @@ def login_user():
 
 @app.route("/update/user/<uuid:user_id>", methods=["POST"])
 @token_required
+@cross_origin()
 def update_user_profile(user_id):
     data = request.get_json()
 
@@ -200,6 +202,7 @@ def update_user_profile(user_id):
 
 @app.route("/users", methods=["GET"])
 @token_required
+@cross_origin()
 def get_users():
     conn = get_connection()
     cur = conn.cursor()
@@ -237,6 +240,7 @@ def get_users():
 
 @app.route("/movies", methods=["GET"])
 # @token_required
+@cross_origin()
 def get_movies():
     conn = get_connection()
     cur = conn.cursor()
@@ -280,6 +284,7 @@ def get_movies():
     return jsonify(movies), 200
 
 @app.route("/movie_details/<uuid:movie_id>", methods=["GET"])
+@cross_origin()
 def get_movie_details(movie_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -363,6 +368,7 @@ def get_movie_details(movie_id):
     }), 200
 
 @app.route("/subscriptions/plans", methods=["GET"])
+@cross_origin()
 def get_subscriptions_plans():
     conn = get_connection()
     cur = conn.cursor()
@@ -449,6 +455,7 @@ def subscribe_to_plan():
 
 
 @app.route("/subscriptions/is_free/<uuid:user_id>", methods=["GET"])
+@cross_origin()
 def check_user_free(user_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -470,6 +477,7 @@ def check_user_free(user_id):
 
 
 @app.route("/subscriptions/plan/<uuid:user_id>", methods=["GET"])
+@cross_origin()
 def get_user_subscription_plan(user_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -496,6 +504,7 @@ def get_user_subscription_plan(user_id):
 
 @app.route("/movies/fav/<uuid:user_id>", methods=["GET"])
 @token_required
+@cross_origin()
 def get_user_fav_movies(user_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -529,6 +538,7 @@ def get_user_fav_movies(user_id):
 
 @app.route("/movies/fav/add", methods=["POST"])
 @token_required
+@cross_origin()
 def add_movie_to_favorites():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -560,6 +570,7 @@ def add_movie_to_favorites():
 
 @app.route("/movies/fav/remove", methods=["POST"])
 @token_required
+@cross_origin()
 def remove_movie_from_favorites():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -589,6 +600,7 @@ def remove_movie_from_favorites():
     return jsonify({"message": "Removed from favourites"}), 200
 
 @app.route("/movies/fav/check", methods=["POST"])
+@cross_origin()
 def is_movie_favorited():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -612,6 +624,7 @@ def is_movie_favorited():
 
 # Endpoint /movies-with-directors
 @app.route("/api/views/movies_with_directors", methods=["GET"])
+@cross_origin()
 def movies_with_directors():
     conn = get_connection()
     cur = conn.cursor()
@@ -637,6 +650,7 @@ def movies_with_directors():
     return jsonify(movies)
 
 @app.route("/add/movies", methods=["POST"])
+@cross_origin()
 def add_movie():
     data = request.get_json()
 
@@ -693,6 +707,7 @@ def add_movie():
 
 
 @app.route("/update/movies/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
 def update_movie(movie_id):
     data = request.get_json()
 
@@ -734,6 +749,7 @@ def update_movie(movie_id):
 
 
 @app.route("/update/additional_movie_data/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
 def update_additional_movie_data(movie_id):
     data = request.get_json()
 
@@ -784,6 +800,7 @@ def update_additional_movie_data(movie_id):
 
 
 @app.route("/movie_test/<uuid:movie_id>", methods=["GET"])
+@cross_origin()
 def movie_test(movie_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -850,6 +867,7 @@ def movie_test(movie_id):
         conn.close()
 
 @app.route("/entity/actor/<string:name>", methods=["GET"])
+@cross_origin()
 def get_actor_with_movies(name):
     conn = get_connection()
     cur = conn.cursor()
@@ -894,6 +912,7 @@ def get_actor_with_movies(name):
     }), 200
 
 @app.route("/entity/director/<string:name>", methods=["GET"])
+@cross_origin()
 def get_director_with_movies(name):
     conn = get_connection()
     cur = conn.cursor()
@@ -936,6 +955,7 @@ def get_director_with_movies(name):
     }), 200
 
 @app.route("/entity/genre/<string:name>", methods=["GET"])
+@cross_origin()
 def get_genre_with_movies(name):
     conn = get_connection()
     cur = conn.cursor()
@@ -982,22 +1002,25 @@ def get_genre_with_movies(name):
 
 
 @app.route("/search/actors", methods=["GET"])
+@cross_origin()
 def get_search_actors():
     return search_entities("ACTORS")
 
 @app.route("/search/directors", methods=["GET"])
+@cross_origin()
 def get_search_directors():
     return search_entities("DIRECTORS")
 
 @app.route("/search/users", methods=["GET"])
 @token_required
+@cross_origin()
 def get_search_users():
     return search_entities("USERS")
 
 @app.route("/search/movies", methods=["GET"])
+@cross_origin()
 def get_search_movies():
     return search_entities("MOVIES")
-
 
 # Uruchomienie serwera
 if __name__ == "__main__":
