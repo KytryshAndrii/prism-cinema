@@ -5,7 +5,7 @@ export const Wrapper = styled(Box)({
   width: '100%',
   minHeight: '90vh',
   display: 'flex',
-  flexDirection: "column",
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
 });
@@ -80,12 +80,12 @@ export const SubscribeButton = styled(Button)({
 });
 
 export const AlertWrapper = styled(Alert)({
-  width: "40%",
-  marginTop: "1.5rem",
+  width: '40%',
+  marginTop: '1.5rem',
 });
 
 export const CurrentPlanText = styled(Typography)({
-  fontWeight: "bold",
-  color: "#4caf50",
+  fontWeight: 'bold',
+  color: '#4caf50',
   marginTop: '4.5rem',
 });

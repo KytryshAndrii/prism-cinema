@@ -1,33 +1,35 @@
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useDebounce } from "../../../hooks/useDebounce";
-import { useSearchMoviesQuery } from "../../../api/authApi";
-import { setFilm } from "../../../store/filmSlice";
-import { SearchInput } from "../styles";
-import { SearchResultItem, SearchResults, SearchWrapper } from "./styles";
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { useSearchMoviesQuery } from '../../../api/authApi';
+import { setFilm } from '../../../store/filmSlice';
+import { SearchInput } from '../styles';
+import { SearchResultItem, SearchResults, SearchWrapper } from './styles';
 
 const SearchBar: React.FC = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedQuery = useDebounce(query, 150);
   const { data } = useSearchMoviesQuery(debouncedQuery, {
-    skip: debouncedQuery.trim() === "",
+    skip: debouncedQuery.trim() === '',
   });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleClick = (film: { id: string; name: string }) => {
-    dispatch(setFilm({
-      id: film.id,
-      name: film.name,
-    }));
-    setQuery("");
+    dispatch(
+      setFilm({
+        id: film.id,
+        name: film.name,
+      })
+    );
+    setQuery('');
     setIsFocused(false);
-    navigate("/film_entity");
+    navigate('/film_entity');
   };
 
   const handleBlur = () => {
@@ -41,13 +43,13 @@ const SearchBar: React.FC = () => {
         type="text"
         placeholder="Search..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={e => setQuery(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={handleBlur}
       />
-      {isFocused && query.trim() !== "" && data && data.length > 0 && (
+      {isFocused && query.trim() !== '' && data && data.length > 0 && (
         <SearchResults>
-          {data.map((film) => (
+          {data.map(film => (
             <SearchResultItem key={film.id} onClick={() => handleClick(film)}>
               {film.name}
             </SearchResultItem>

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   useGetActorEntityQuery,
   useGetDirectorEntityQuery,
   useGetGenreEntityQuery,
-} from "../../../api/authApi";
+} from '../../../api/authApi';
 
-export type EntityType = "cast" | "genres" | "directors";
+export type EntityType = 'cast' | 'genres' | 'directors';
 
 export const useEntityModal = () => {
   const [selectedEntity, setSelectedEntity] = useState<{
@@ -26,47 +26,44 @@ export const useEntityModal = () => {
   };
 
   const actorQuery = useGetActorEntityQuery(
-    selectedEntity?.type === "cast" ? selectedEntity.name : "",
-    { skip: selectedEntity?.type !== "cast" }
+    selectedEntity?.type === 'cast' ? selectedEntity.name : '',
+    { skip: selectedEntity?.type !== 'cast' }
   );
 
   const directorQuery = useGetDirectorEntityQuery(
-    selectedEntity?.type === "directors" ? selectedEntity.name : "",
-    { skip: selectedEntity?.type !== "directors" }
+    selectedEntity?.type === 'directors' ? selectedEntity.name : '',
+    { skip: selectedEntity?.type !== 'directors' }
   );
 
   const genreQuery = useGetGenreEntityQuery(
-    selectedEntity?.type === "genres" ? selectedEntity.name : "",
-    { skip: selectedEntity?.type !== "genres" }
+    selectedEntity?.type === 'genres' ? selectedEntity.name : '',
+    { skip: selectedEntity?.type !== 'genres' }
   );
 
   let entityData = null;
 
-switch (selectedEntity?.type) {
-  case "cast":
-    entityData = actorQuery.data ?? null;
-    break;
+  switch (selectedEntity?.type) {
+    case 'cast':
+      entityData = actorQuery.data ?? null;
+      break;
 
-  case "directors":
-    entityData = directorQuery.data ?? null;
-    break;
+    case 'directors':
+      entityData = directorQuery.data ?? null;
+      break;
 
-  case "genres":
-    entityData = genreQuery.data ?? null;
-    break;
+    case 'genres':
+      entityData = genreQuery.data ?? null;
+      break;
 
-  default:
-    entityData = null;
-}
+    default:
+      entityData = null;
+  }
   return {
     open,
-    modalTitle: selectedEntity?.name || "",
+    modalTitle: selectedEntity?.name || '',
     entityData,
     handleOpen,
     handleClose,
-    isLoading:
-      actorQuery.isFetching ||
-      directorQuery.isFetching ||
-      genreQuery.isFetching,
+    isLoading: actorQuery.isFetching || directorQuery.isFetching || genreQuery.isFetching,
   };
 };

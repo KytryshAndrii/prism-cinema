@@ -1,21 +1,13 @@
-import React from "react";
-import {
-  Container,
-  Heading,
-  FilmsGrid,
-  FilmCard,
-  FilmImage,
-  FilmInfo,
-  FilmTitle
-} from "./styles";
-import { useMainPageFilmsRender } from "./useMainPageFilmsRender";
-import { useNavigate } from "react-router-dom";
-import { CircularProgress, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import type { AppState } from "../../store/store";
-import { useDispatch } from "react-redux";
-import { setFilm } from "../../store/filmSlice";
-import type { tFilmMetaData } from "./types";
+import React from 'react';
+import { Container, Heading, FilmsGrid, FilmCard, FilmImage, FilmInfo, FilmTitle } from './styles';
+import { useMainPageFilmsRender } from './useMainPageFilmsRender';
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import type { AppState } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { setFilm } from '../../store/filmSlice';
+import type { tFilmMetaData } from './types';
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,24 +16,28 @@ const MainPage: React.FC = () => {
 
   const navigate = useNavigate();
   const handleFilmClick = (film: tFilmMetaData) => {
-    dispatch(setFilm({
-      id: film.id,
-      name: film.title,
-    }));
+    dispatch(
+      setFilm({
+        id: film.id,
+        name: film.title,
+      })
+    );
     navigate(`/film_entity`);
   };
 
   return (
     <Container>
-      <Heading>{isLoggedIn
+      <Heading>
+        {isLoggedIn
           ? `Welcome back, ${login?.toUpperCase()}. Here's what we've been watching...`
-          : "Here’s what we’ve been watching..."}</Heading>
+          : 'Here’s what we’ve been watching...'}
+      </Heading>
 
       {isLoading && <CircularProgress />}
       {isError && <Typography color="error">Failed to load movies.</Typography>}
 
       <FilmsGrid>
-        {films.map((film) => (
+        {films.map(film => (
           <FilmCard key={film.id} onClick={() => handleFilmClick(film)}>
             <FilmImage src={film.imageUrl} alt={film.title} />
             <FilmInfo>

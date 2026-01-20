@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9cd587a4-6250-43d8-9983-8eabbff4989d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_backend/utils/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_backend/utils/connection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_database/sql_backup_with_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db_database/sql_backup_with_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

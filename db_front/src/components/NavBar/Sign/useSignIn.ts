@@ -1,12 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginRequestSchema } from "../../../schemas/authSchemas";
-import type { tLoginRequest } from "../../../types/authTypes";
-import { useLoginUserMutation } from "../../../api/authApi";
-import { useDispatch } from "react-redux";
-import { logIn } from "../../../store/userSlice";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginRequestSchema } from '../../../schemas/authSchemas';
+import type { tLoginRequest } from '../../../types/authTypes';
+import { useLoginUserMutation } from '../../../api/authApi';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../../store/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export const useSignIn = (onClose: () => void) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const useSignIn = (onClose: () => void) => {
     formState: { errors },
   } = useForm<tLoginRequest>({
     resolver: zodResolver(loginRequestSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
   });
 
   const onSubmit = async (formData: tLoginRequest) => {
@@ -40,22 +40,22 @@ export const useSignIn = (onClose: () => void) => {
           birthday: result.birthday,
           isLoggedIn: true,
           isUserAdmin: result.isUserAdmin,
-          isUserSubscribed: result.isUserSubscribed
+          isUserSubscribed: result.isUserSubscribed,
         })
       );
 
       onClose();
-      navigate("/films");
+      navigate('/films');
     } catch (error: any) {
       if (error?.status === 401) {
-        setErrorMessage("Incorrect login or password.");
-        throw new Error("Incorrect login or password.");
+        setErrorMessage('Incorrect login or password.');
+        throw new Error('Incorrect login or password.');
       } else if (error?.status === 500) {
-        setErrorMessage("Server error. Please try again later.");
-        throw new Error("Server error. Please try again later.");
-    } else {
-        setErrorMessage("Login failed.");
-        throw new Error("Login failed. Unknowned error.");
+        setErrorMessage('Server error. Please try again later.');
+        throw new Error('Server error. Please try again later.');
+      } else {
+        setErrorMessage('Login failed.');
+        throw new Error('Login failed. Unknowned error.');
       }
     }
   };

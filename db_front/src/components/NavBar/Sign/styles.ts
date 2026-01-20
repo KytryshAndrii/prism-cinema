@@ -9,18 +9,18 @@ export const FormBox = styled(Box)({
 });
 
 export const SignInButton = styled(Button)({
-    bgcolor: '#00C853',
-    color: 'white',
-    fontWeight: 'bold',
-    borderRadius: '0.5rem',
-    px: '1.5rem',
-    py: '0.5rem',
-})
+  bgcolor: '#00C853',
+  color: 'white',
+  fontWeight: 'bold',
+  borderRadius: '0.5rem',
+  px: '1.5rem',
+  py: '0.5rem',
+});
 
 export const SignInTextField = styled(TextField)({
-    background: '#fff',
-    borderRadius: '0.8rem'
-})
+  background: '#fff',
+  borderRadius: '0.8rem',
+});
 
 export const CloseButtonBox = styled(Box)({
   top: '0.5rem',
@@ -29,5 +29,5 @@ export const CloseButtonBox = styled(Box)({
 });
 
 export const SignInCloseIcon = styled(CloseIcon)({
-  color: '#fff'
-})
+  color: '#fff',
+});

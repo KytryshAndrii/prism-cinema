@@ -1,18 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Avatar } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { DownArrow, DropdownDivider, DropdownHeader, DropdownItem, DropdownList, DropdownWrapper } from "./styles";
-import { UserAvatar } from "../styles";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../../store/userSlice";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Avatar } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import {
+  DownArrow,
+  DropdownDivider,
+  DropdownHeader,
+  DropdownItem,
+  DropdownList,
+  DropdownWrapper,
+} from './styles';
+import { UserAvatar } from '../styles';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../../store/userSlice';
 
 type tUserDropdownProps = {
-    userLogin: string
-}
+  userLogin: string;
+};
 
-const UserDropdown: React.FC<tUserDropdownProps> = ({userLogin}) => {
+const UserDropdown: React.FC<tUserDropdownProps> = ({ userLogin }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,29 +33,26 @@ const UserDropdown: React.FC<tUserDropdownProps> = ({userLogin}) => {
   const handleSignOut = () => {
     dispatch(logOut());
     setOpen(false);
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <DropdownWrapper>
       <DropdownHeader onClick={toggleDropdown}>
         <UserAvatar>
-            <Avatar
-                src="src/assets/user_avatar/user_avatar.svg"
-                alt="User Icon"
-            />
+          <Avatar src="src/assets/user_avatar/user_avatar.svg" alt="User Icon" />
         </UserAvatar>
         <span>{userLogin?.toUpperCase()}</span>
-        <DownArrow>
-          {open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-        </DownArrow>
+        <DownArrow>{open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}</DownArrow>
       </DropdownHeader>
 
       {open && (
         <DropdownList>
-          <DropdownItem onClick={() => handleNavigate("/profile")}>Profile</DropdownItem>
+          <DropdownItem onClick={() => handleNavigate('/profile')}>Profile</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => handleNavigate("/subscriptions")}>Subscriptions</DropdownItem>
+          <DropdownItem onClick={() => handleNavigate('/subscriptions')}>
+            Subscriptions
+          </DropdownItem>
           <DropdownItem onClick={handleSignOut}>Sign Out</DropdownItem>
         </DropdownList>
       )}

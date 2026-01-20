@@ -15,18 +15,18 @@ const App: React.FC = () => {
     <>
       <Background />
       <Router>
-      <AuthFormsProvider>
-       <NavBar/>
-       
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/films" element={<MainPage />} />
-          <Route path="/film_entity" element={<FilmDetails/>}/>
-          <Route path="/likes" element={<FavouritesMovies/>}/>
-          <Route path="/subscriptions" element={<SubscriptionsPlans/>}/>
-          <Route path="/profile" element={<UserProfile/>}/>
-        </Routes>
-      </AuthFormsProvider>
+        <AuthFormsProvider>
+          <NavBar />
+
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/films" element={<MainPage />} />
+            <Route path="/film_entity" element={<FilmDetails />} />
+            <Route path="/likes" element={<FavouritesMovies />} />
+            <Route path="/subscriptions" element={<SubscriptionsPlans />} />
+            <Route path="/profile" element={<UserProfile />} />
+          </Routes>
+        </AuthFormsProvider>
       </Router>
     </>
   );

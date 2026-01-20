@@ -1,13 +1,13 @@
 import React from 'react';
-import {
-  Dialog,
-  TextField,
-  IconButton,
-  CircularProgress,
-  Alert,
-} from '@mui/material';
+import { Dialog, TextField, IconButton, CircularProgress, Alert } from '@mui/material';
 import { CloseIcon } from '../../../icons/icons';
-import { Brand, SignDialogTitle, SignUpButton, SignUpButtonContainer, SignUpDialogContent } from './styles';
+import {
+  Brand,
+  SignDialogTitle,
+  SignUpButton,
+  SignUpButtonContainer,
+  SignUpDialogContent,
+} from './styles';
 import { useSignUpModal } from './useSignUpModal';
 
 type tSignUpModalProps = {
@@ -16,12 +16,15 @@ type tSignUpModalProps = {
 };
 
 const SignUpModal: React.FC<tSignUpModalProps> = ({ isOpen, onClose }) => {
-   const { register, handleSubmit, onSubmit, errors, isLoading, errorMessage } = useSignUpModal(onClose);
+  const { register, handleSubmit, onSubmit, errors, isLoading, errorMessage } =
+    useSignUpModal(onClose);
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <SignDialogTitle>
-        <Brand>JOIN PRISM<span>.</span>CINEMA</Brand>
+        <Brand>
+          JOIN PRISM<span>.</span>CINEMA
+        </Brand>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
@@ -32,21 +35,21 @@ const SignUpModal: React.FC<tSignUpModalProps> = ({ isOpen, onClose }) => {
           <TextField
             label="Username"
             variant="filled"
-            {...register("login")}
+            {...register('login')}
             error={!!errors.login}
             helperText={errors.login?.message}
           />
           <TextField
             label="Email address"
             variant="filled"
-            {...register("email")}
+            {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
           <TextField
             label="Password"
             variant="filled"
-            {...register("password")}
+            {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
           />
@@ -54,7 +57,7 @@ const SignUpModal: React.FC<tSignUpModalProps> = ({ isOpen, onClose }) => {
             label="Date of birth"
             placeholder="YYYY-MM-DD"
             variant="filled"
-            {...register("dateOfBirth")}
+            {...register('dateOfBirth')}
             error={!!errors.dateOfBirth}
             helperText={errors.dateOfBirth?.message}
           />
@@ -67,7 +70,7 @@ const SignUpModal: React.FC<tSignUpModalProps> = ({ isOpen, onClose }) => {
 
           <SignUpButtonContainer>
             <SignUpButton variant="contained" type="submit" disabled={isLoading}>
-              {isLoading ? <CircularProgress size={22} /> : "SIGN UP"}
+              {isLoading ? <CircularProgress size={22} /> : 'SIGN UP'}
             </SignUpButton>
           </SignUpButtonContainer>
         </SignUpDialogContent>

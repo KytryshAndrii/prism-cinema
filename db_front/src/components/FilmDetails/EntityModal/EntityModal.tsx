@@ -1,16 +1,10 @@
-import React from "react";
-import { Dialog, DialogContent, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import {
-  ModalBox,
-  ModalTitle,
-  ModalSubtitle,
-  MoviesGrid,
-  MovieChip,
-} from "./styles";
-import type { tEntityResponse } from "../../../types/authTypes";
-import { useDispatch } from "react-redux";
-import { setFilm } from "../../../store/filmSlice";
+import React from 'react';
+import { Dialog, DialogContent, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { ModalBox, ModalTitle, ModalSubtitle, MoviesGrid, MovieChip } from './styles';
+import type { tEntityResponse } from '../../../types/authTypes';
+import { useDispatch } from 'react-redux';
+import { setFilm } from '../../../store/filmSlice';
 
 type tEntityModalProps = {
   open: boolean;
@@ -19,12 +13,7 @@ type tEntityModalProps = {
   data: tEntityResponse | null;
 };
 
-const EntityModal: React.FC<tEntityModalProps> = ({
-  open,
-  onClose,
-  title,
-  data,
-}) => {
+const EntityModal: React.FC<tEntityModalProps> = ({ open, onClose, title, data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -39,7 +28,7 @@ const EntityModal: React.FC<tEntityModalProps> = ({
     );
 
     onClose();
-    navigate("/film_entity");
+    navigate('/film_entity');
   };
 
   return (
@@ -49,27 +38,20 @@ const EntityModal: React.FC<tEntityModalProps> = ({
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: { background: "transparent" },
+        sx: { background: 'transparent' },
       }}
     >
       <DialogContent sx={{ p: 0 }}>
         <ModalBox key={title}>
           <ModalTitle>{title}</ModalTitle>
 
-          {data.birthplace && (
-            <ModalSubtitle>{data.birthplace}</ModalSubtitle>
-          )}
+          {data.birthplace && <ModalSubtitle>{data.birthplace}</ModalSubtitle>}
 
-          {data.description && (
-            <Typography mb={2}>{data.description}</Typography>
-          )}
+          {data.description && <Typography mb={2}>{data.description}</Typography>}
 
           <MoviesGrid>
-            {data.movies.map((movie) => (
-              <MovieChip
-                key={movie.movie_id}
-                onClick={() => handleMovieClick(movie)}
-              >
+            {data.movies.map(movie => (
+              <MovieChip key={movie.movie_id} onClick={() => handleMovieClick(movie)}>
                 {movie.movie_name}
               </MovieChip>
             ))}

@@ -4,24 +4,16 @@ import { Alert, CircularProgress, IconButton } from '@mui/material';
 import { useSignIn } from './useSignIn';
 
 type tSignInFormProps = {
-    isOpen: boolean;
-    onClose: () => void;
-}
+  isOpen: boolean;
+  onClose: () => void;
+};
 
 const SignInForm: React.FC<tSignInFormProps> = ({ isOpen, onClose }) => {
+  const { register, handleSubmit, onSubmit, errors, isLoading, errorMessage } = useSignIn(onClose);
 
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    errors,
-    isLoading,
-    errorMessage,
-  } = useSignIn(onClose);
-
-    if (!isOpen) return null;
+  if (!isOpen) return null;
   return (
-      <FormBox  onSubmit={handleSubmit(onSubmit)}>
+    <FormBox onSubmit={handleSubmit(onSubmit)}>
       <CloseButtonBox>
         <IconButton size="small" onClick={onClose}>
           <SignInCloseIcon />
@@ -32,7 +24,7 @@ const SignInForm: React.FC<tSignInFormProps> = ({ isOpen, onClose }) => {
         label="Username"
         variant="filled"
         size="small"
-        {...register("login")}
+        {...register('login')}
         error={!!errors.login}
         helperText={errors.login?.message}
       />
@@ -42,24 +34,19 @@ const SignInForm: React.FC<tSignInFormProps> = ({ isOpen, onClose }) => {
         type="password"
         variant="filled"
         size="small"
-        {...register("password")}
+        {...register('password')}
         error={!!errors.password}
         helperText={errors.password?.message}
       />
 
       {errorMessage && (
-        <Alert severity="error" sx={{ mt: "0.5rem" }}>
+        <Alert severity="error" sx={{ mt: '0.5rem' }}>
           {errorMessage}
         </Alert>
       )}
 
-      <SignInButton
-        variant="contained"
-        disabled={isLoading}
-        onClick={handleSubmit(onSubmit)}
-
-      >
-        {isLoading ? <CircularProgress size={22} /> : "SIGN IN"}
+      <SignInButton variant="contained" disabled={isLoading} onClick={handleSubmit(onSubmit)}>
+        {isLoading ? <CircularProgress size={22} /> : 'SIGN IN'}
       </SignInButton>
     </FormBox>
   );

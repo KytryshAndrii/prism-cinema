@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react';
 
 type tAuthFormsContextType = {
   isSignInOpen: boolean;
@@ -20,14 +20,16 @@ export const AuthFormsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const toggleSignUpForm = () => setIsSignUpOpen(prev => !prev);
 
   return (
-    <AuthFormsContext.Provider value={{
-      isSignInOpen,
-      isSignUpOpen,
-      pendingPlanId,
-      toggleSignInForm,
-      toggleSignUpForm,
-      setPendingPlanId,
-    }}>
+    <AuthFormsContext.Provider
+      value={{
+        isSignInOpen,
+        isSignUpOpen,
+        pendingPlanId,
+        toggleSignInForm,
+        toggleSignUpForm,
+        setPendingPlanId,
+      }}
+    >
       {children}
     </AuthFormsContext.Provider>
   );
@@ -36,7 +38,7 @@ export const AuthFormsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 export const useAuthForms = () => {
   const context = useContext(AuthFormsContext);
   if (!context) {
-    throw new Error("useAuthForms must be used within an AuthFormsProvider");
+    throw new Error('useAuthForms must be used within an AuthFormsProvider');
   }
   return context;
 };

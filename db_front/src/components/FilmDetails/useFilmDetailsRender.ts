@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux";
-import type { AppState } from "../../store/store";
+import { useSelector } from 'react-redux';
+import type { AppState } from '../../store/store';
 import {
   useAddMovieToFavouritesMutation,
   useCheckIfMovieIsFavouriteMutation,
   useGetMovieDetailsQuery,
   useRemoveMovieFromFavouritesMutation,
-} from "../../api/authApi";
-import { useEffect, useState } from "react";
+} from '../../api/authApi';
+import { useEffect, useState } from 'react';
 
 export const useFilmDetailsRender = () => {
   const user = useSelector((state: AppState) => state.user);
@@ -36,7 +36,7 @@ export const useFilmDetailsRender = () => {
     };
 
     fetchIsFav();
-  }, []); 
+  }, []);
 
   const toggleLikeMovie = async () => {
     if (!user.id || !id) return;
@@ -49,7 +49,7 @@ export const useFilmDetailsRender = () => {
       }
       setIsMovieFav(!isMovieFav);
     } catch (error) {
-      console.error("Failed to toggle favourite:", error);
+      console.error('Failed to toggle favourite:', error);
     }
   };
 
@@ -68,14 +68,14 @@ export const useFilmDetailsRender = () => {
       title: name,
       poster: createImg(details?.movie_poster || null),
       backdrop: createImg(details?.movie_preview_poster || null),
-      trailerUrl: details?.trailer_url ? formatYouTubeUrl(details.trailer_url) : "",
-      description: details?.description || "",
+      trailerUrl: details?.trailer_url ? formatYouTubeUrl(details.trailer_url) : '',
+      description: details?.description || '',
       cast: details?.actors || [],
       genres: details?.genres || [],
       directors: details?.directors || [],
-      pg: details?.pg || "",
-      release_date: details?.release_date || "",
-      rating: details?.rating || "",
+      pg: details?.pg || '',
+      release_date: details?.release_date || '',
+      rating: details?.rating || '',
       isLiked: isMovieFav,
     },
     toggleLikeMovie,

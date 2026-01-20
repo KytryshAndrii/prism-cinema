@@ -4,7 +4,7 @@ import { styled, alpha } from '@mui/material/styles';
 export const NavbarBox = styled(AppBar)(() => ({
   backgroundColor: 'transparent',
   boxShadow: '0 0.125rem 0.625rem rgba(0, 0, 0, 0.3)',
-  backdropFilter: 'blur(0.25rem)', 
+  backdropFilter: 'blur(0.25rem)',
   zIndex: 1000,
 }));
 
@@ -15,7 +15,6 @@ export const ToolbarStyled = styled(Toolbar)({
   padding: '0 2rem',
 });
 
-
 export const Brand = styled(Box)(() => ({
   fontSize: '1.4rem',
   fontWeight: 'bold',
@@ -23,7 +22,7 @@ export const Brand = styled(Box)(() => ({
   span: {
     color: '#EE131F',
   },
-  cursor: 'pointer'
+  cursor: 'pointer',
 }));
 
 export const NavButtons = styled(Box)({
@@ -33,26 +32,26 @@ export const NavButtons = styled(Box)({
 });
 
 export const UserAvatar = styled(Box)({
-  display:"flex",
+  display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: "1rem",
+  gap: '1rem',
   color: '#fff',
   fontSize: '1.2rem',
   fontWeight: 'bold',
-  cursor:"pointer"
-})
+  cursor: 'pointer',
+});
 
 export const BrandWithAvatarButtons = styled(Box)({
-  display:"flex",
+  display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: "3rem"
-})
+  gap: '3rem',
+});
 
-export const SingleNavButton =  styled(Button)({
+export const SingleNavButton = styled(Button)({
   color: '#fff',
   fontSize: '1rem',
   fontWeight: 'bold',

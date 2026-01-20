@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Wrapper,
   PlansContainer,
@@ -10,27 +10,20 @@ import {
   PriceValue,
   SubscribeButton,
   AlertWrapper,
-  CurrentPlanText
-} from "./styles";
-import { Box, CircularProgress } from "@mui/material";
-import { useSubscriptionsPlans } from "./useSubscriptionsPlans";
+  CurrentPlanText,
+} from './styles';
+import { Box, CircularProgress } from '@mui/material';
+import { useSubscriptionsPlans } from './useSubscriptionsPlans';
 
 const SubscriptionPlans: React.FC = () => {
-  const {
-    plans,
-    isLoading,
-    handleSubscribe,
-    userPlan,
-    alert,
-    setAlert,
-  } = useSubscriptionsPlans();
+  const { plans, isLoading, handleSubscribe, userPlan, alert, setAlert } = useSubscriptionsPlans();
 
   if (isLoading) return <CircularProgress />;
 
   return (
     <Wrapper>
       <PlansContainer>
-        {plans.map((plan) => {
+        {plans.map(plan => {
           const isCurrentPlan = plan.id === userPlan?.id;
 
           return (
@@ -47,9 +40,7 @@ const SubscriptionPlans: React.FC = () => {
                 {isCurrentPlan ? (
                   <CurrentPlanText>Your Current Plan</CurrentPlanText>
                 ) : (
-                  <SubscribeButton onClick={() => handleSubscribe(plan)}>
-                    SUBSCRIBE
-                  </SubscribeButton>
+                  <SubscribeButton onClick={() => handleSubscribe(plan)}>SUBSCRIBE</SubscribeButton>
                 )}
               </Box>
             </PlanCard>
@@ -58,10 +49,7 @@ const SubscriptionPlans: React.FC = () => {
       </PlansContainer>
 
       {alert && (
-        <AlertWrapper
-          severity={alert.severity}
-          onClose={() => setAlert(null)}
-        >
+        <AlertWrapper severity={alert.severity} onClose={() => setAlert(null)}>
           {alert.message}
         </AlertWrapper>
       )}
