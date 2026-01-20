@@ -6,6 +6,9 @@ import {
   ToolbarStyled,
   SingleNavButton,
   BrandWithAvatarButtons,
+  AdminCut,
+  AdminStyleWrapper,
+  AdminNavButton,
 } from './styles';
 import SignUpModal from './Register/SignUpModal';
 import SignInForm from './Sign/SignInForm';
@@ -15,7 +18,6 @@ import type { AppState } from '../../store/store';
 import { useAuthForms } from '../../context/AuthFormContext';
 import UserDropdown from './UserDropdown/UserDropdown';
 import SearchBar from './SearchBar/SearchBar';
-import { AdminCutIcon } from '../../icons/icons';
 
 const NavBar: React.FC = () => {
   const { isSignInOpen, isSignUpOpen, toggleSignInForm, toggleSignUpForm } = useAuthForms();
@@ -36,10 +38,10 @@ const NavBar: React.FC = () => {
               PRISM<span>.</span>CINEMA
             </Brand>
             {isLoggedIn ? (
-              <>
+              <AdminStyleWrapper>
                 <UserDropdown userLogin={login || ''} />
-                {isUserAdmin ? <AdminCutIcon /> : <></>}
-              </>
+                {isUserAdmin ? <AdminCut /> : <></>}
+              </AdminStyleWrapper>
             ) : (
               <></>
             )}
@@ -48,6 +50,11 @@ const NavBar: React.FC = () => {
             <NavButtons>
               <SingleNavButton onClick={() => navigate('/likes')}>LIKES</SingleNavButton>
               <SingleNavButton onClick={() => navigate('/films')}>FILMS</SingleNavButton>
+              {isUserAdmin ? (
+                <AdminNavButton onClick={() => navigate('/admin_panel')}>ADMIN</AdminNavButton>
+              ) : (
+                <></>
+              )}
               <SearchBar />
             </NavButtons>
           ) : isSignInOpen ? (

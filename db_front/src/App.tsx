@@ -9,6 +9,7 @@ import SubscriptionsPlans from './components/SubscriptionsPlans/SubscriptionsPla
 import { AuthFormsProvider } from './context/AuthFormContext';
 import UserProfile from './components/AccountDetails/User/UserProfile';
 import FavouritesMovies from './components/FavouritesMovies/FavouritesMovies';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
             <Route path="/likes" element={<FavouritesMovies />} />
             <Route path="/subscriptions" element={<SubscriptionsPlans />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/admin_panel" element={<AdminPanel />} />
           </Routes>
         </AuthFormsProvider>
       </Router>

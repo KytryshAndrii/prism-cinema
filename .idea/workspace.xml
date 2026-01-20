@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9cd587a4-6250-43d8-9983-8eabbff4989d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_database/sql_backup_with_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db_database/sql_backup_with_data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_front/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_front/src/components/NavBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/components/NavBar/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_front/src/components/NavBar/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/components/NavBar/styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_front/src/icons/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/db_front/src/icons/icons.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

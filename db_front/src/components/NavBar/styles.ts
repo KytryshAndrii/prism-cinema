@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, InputBase, Button, Box } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import { AdminCutIcon } from '../../icons/icons';
 
 export const NavbarBox = styled(AppBar)(() => ({
   backgroundColor: 'transparent',
@@ -46,13 +47,19 @@ export const UserAvatar = styled(Box)({
 export const BrandWithAvatarButtons = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'space-around',
   alignItems: 'center',
   gap: '3rem',
 });
 
 export const SingleNavButton = styled(Button)({
   color: '#fff',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+});
+
+export const AdminNavButton = styled(Button)({
+  color: '#EE131F',
   fontSize: '1rem',
   fontWeight: 'bold',
 });
@@ -65,3 +72,13 @@ export const SearchInput = styled(InputBase)(() => ({
   border: '0.0625rem solid rgba(255,255,255,0.2)',
   fontSize: '0.9rem',
 }));
+
+export const AdminStyleWrapper = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+export const AdminCut = styled(AdminCutIcon)({
+  fontSize: '2.4rem',
+  color: '#EE131F',
+});
