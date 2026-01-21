@@ -2,18 +2,21 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
 from search_entities import search_entities
-from db_backend.token_validation import token_required
-from service.user import ( register_user_logic, login_user_logic,
-                          update_user_profile_logic, get_users_logic )
-from service.movies import ( get_movies_logic, get_movie_details_logic,
-                             get_user_fav_movies_logic, add_movie_to_favorites_logic,
-                             remove_movie_from_favorites_logic, is_movie_favorited_logic,
-                             get_movies_with_directors_logic, add_movie_logic,
-                             update_movie_logic, update_additional_movie_data_logic,
-                             get_movie_test_logic )
+from token_validation import token_required
+from service.users import (register_user_logic, login_user_logic,
+                           update_user_profile_logic, get_users_logic,
+                           delete_user_logic, )
+from service.movies import (get_movies_logic, get_movie_details_logic,
+                            get_user_fav_movies_logic, add_movie_to_favorites_logic,
+                            remove_movie_from_favorites_logic, is_movie_favorited_logic,
+                            get_movies_with_directors_logic, add_movie_logic,
+                            update_movie_logic, update_additional_movie_data_logic,
+                            get_movie_test_logic, update_movie_actors_logic,
+                            update_movie_directors_logic, update_movie_genres_logic, update_movie_localizations_logic,
+                            update_movie_licenses_logic, delete_movie_logic, )
 from service.subscriptions import ( get_subscription_plans_logic, subscribe_to_plan_logic,
-                                    check_user_free_logic, get_user_subscription_plan_logic)
-from service.entities import ( get_actor_with_movies_logic, get_director_with_movies_logic, get_genre_with_movies_logic )
+                                    check_user_free_logic, get_user_subscription_plan_logic, )
+from service.entities import ( get_actor_with_movies_logic, get_director_with_movies_logic, get_genre_with_movies_logic, )
 
 
 app = Flask(__name__)
@@ -52,6 +55,13 @@ def update_user_profile(user_id):
     data = request.get_json()
     status_code = update_user_profile_logic(user_id, data)
     return "", status_code
+
+
+@app.route("/delete/user/<uuid:user_id>", methods=["DELETE"])
+@cross_origin()
+def delete_user(user_id):
+    response, status_code = delete_user_logic(user_id)
+    return jsonify(response), status_code
 
 
 @app.route("/users", methods=["GET"])
@@ -168,6 +178,28 @@ def update_movie(movie_id):
     response, status_code = update_movie_logic(movie_id, data)
     return jsonify(response), status_code
 
+@app.route("/update/movie_actors/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
+def update_movie_actors(movie_id):
+    data = request.get_json()
+    response, status_code = update_movie_actors_logic(movie_id, data)
+    return jsonify(response), status_code
+
+@app.route("/update/movie_directors/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
+def update_movie_directors(movie_id):
+    data = request.get_json()
+    response, status_code = update_movie_directors_logic(movie_id, data)
+    return jsonify(response), status_code
+
+
+@app.route("/update/movie_genres/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
+def update_movie_genres(movie_id):
+    data = request.get_json()
+    response, status_code = update_movie_genres_logic(movie_id, data)
+    return jsonify(response), status_code
+
 
 @app.route("/update/additional_movie_data/<uuid:movie_id>", methods=["POST"])
 @cross_origin()
@@ -177,10 +209,33 @@ def update_additional_movie_data(movie_id):
     return jsonify(response), status_code
 
 
+@app.route("/update/movie_localizations/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
+def update_movie_localizations(movie_id):
+    data = request.get_json()
+    response, status_code = update_movie_localizations_logic(movie_id, data)
+    return jsonify(response), status_code
+
+
+@app.route("/update/movie_licenses/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
+def update_movie_licenses(movie_id):
+    data = request.get_json()
+    response, status_code = update_movie_licenses_logic(movie_id, data)
+    return jsonify(response), status_code
+
+
 @app.route("/movie_test/<uuid:movie_id>", methods=["GET"])
 @cross_origin()
 def movie_test(movie_id):
     response, status_code = get_movie_test_logic(movie_id)
+    return jsonify(response), status_code
+
+
+@app.route("/delete/movie/<uuid:movie_id>", methods=["DELETE"])
+@cross_origin()
+def delete_movie(movie_id):
+    response, status_code = delete_movie_logic(movie_id)
     return jsonify(response), status_code
 
 @app.route("/entity/actor/<string:name>", methods=["GET"])

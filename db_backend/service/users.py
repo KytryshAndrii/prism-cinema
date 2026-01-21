@@ -215,3 +215,22 @@ def get_users_logic(limit=50):
     finally:
         cur.close()
         conn.close()
+
+
+def delete_user_logic(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""DELETE FROM "USERS" WHERE user_id = %s""", (user_id,))
+        if cur.rowcount == 0:
+            conn.rollback()
+            return {"message": "User not found"}, 404
+        conn.commit()
+        return {"message": "User deleted successfully"}, 200
+    except Exception as e:
+        conn.rollback()
+        return {"error": str(e)}, 500
+    finally:
+        cur.close()
+        conn.close()
+
