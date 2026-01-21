@@ -21,6 +21,7 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Endpoint testowy /health
 @app.route("/health", methods=["GET"])
+@cross_origin()
 def health():
     return {"status": "ok"}
 
@@ -46,6 +47,7 @@ def login_user():
 
 @app.route("/update/user/<uuid:user_id>", methods=["POST"])
 @token_required
+@cross_origin()
 def update_user_profile(user_id):
     data = request.get_json()
     status_code = update_user_profile_logic(user_id, data)
@@ -54,6 +56,7 @@ def update_user_profile(user_id):
 
 @app.route("/users", methods=["GET"])
 @token_required
+@cross_origin()
 def get_users():
     users = get_users_logic()
     return jsonify(users), 200
@@ -61,17 +64,20 @@ def get_users():
 
 @app.route("/movies", methods=["GET"])
 # @token_required  # Uncomment if needed
+@cross_origin()
 def get_movies():
     movies = get_movies_logic()
     return jsonify(movies), 200
 
 
 @app.route("/movie_details/<uuid:movie_id>", methods=["GET"])
+@cross_origin()
 def get_movie_details(movie_id):
     movie, status_code = get_movie_details_logic(movie_id)
     return jsonify(movie), status_code
 
 @app.route("/subscriptions/plans", methods=["GET"])
+@cross_origin()
 def get_subscriptions_plans():
     plans = get_subscription_plans_logic()
     return jsonify(plans), 200
@@ -88,18 +94,21 @@ def subscribe_to_plan():
 
 
 @app.route("/subscriptions/is_free/<uuid:user_id>", methods=["GET"])
+@cross_origin()
 def check_user_free(user_id):
     response, status_code = check_user_free_logic(user_id)
     return jsonify(response) if isinstance(response, bool) else jsonify(response), status_code
 
 
 @app.route("/subscriptions/plan/<uuid:user_id>", methods=["GET"])
+@cross_origin()
 def get_user_subscription_plan(user_id):
     response, status_code = get_user_subscription_plan_logic(user_id)
     return jsonify(response), status_code
 
 @app.route("/movies/fav/<uuid:user_id>", methods=["GET"])
 @token_required
+@cross_origin()
 def get_user_fav_movies(user_id):
     movies = get_user_fav_movies_logic(user_id)
     return jsonify(movies), 200
@@ -107,6 +116,7 @@ def get_user_fav_movies(user_id):
 
 @app.route("/movies/fav/add", methods=["POST"])
 @token_required
+@cross_origin()
 def add_movie_to_favorites():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -117,6 +127,7 @@ def add_movie_to_favorites():
 
 @app.route("/movies/fav/remove", methods=["POST"])
 @token_required
+@cross_origin()
 def remove_movie_from_favorites():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -126,6 +137,7 @@ def remove_movie_from_favorites():
 
 
 @app.route("/movies/fav/check", methods=["POST"])
+@cross_origin()
 def is_movie_favorited():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -136,11 +148,13 @@ def is_movie_favorited():
 
 # Endpoint /movies-with-directors
 @app.route("/api/views/movies_with_directors", methods=["GET"])
+@cross_origin()
 def movies_with_directors():
     movies = get_movies_with_directors_logic()
     return jsonify(movies), 200
 
 @app.route("/add/movies", methods=["POST"])
+@cross_origin()
 def add_movie():
     data = request.get_json()
     response, status_code = add_movie_logic(data)
@@ -148,6 +162,7 @@ def add_movie():
 
 
 @app.route("/update/movies/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
 def update_movie(movie_id):
     data = request.get_json()
     response, status_code = update_movie_logic(movie_id, data)
@@ -155,6 +170,7 @@ def update_movie(movie_id):
 
 
 @app.route("/update/additional_movie_data/<uuid:movie_id>", methods=["POST"])
+@cross_origin()
 def update_additional_movie_data(movie_id):
     data = request.get_json()
     response, status_code = update_additional_movie_data_logic(movie_id, data)
@@ -162,42 +178,50 @@ def update_additional_movie_data(movie_id):
 
 
 @app.route("/movie_test/<uuid:movie_id>", methods=["GET"])
+@cross_origin()
 def movie_test(movie_id):
     response, status_code = get_movie_test_logic(movie_id)
     return jsonify(response), status_code
 
 @app.route("/entity/actor/<string:name>", methods=["GET"])
+@cross_origin()
 def get_actor_with_movies(name):
     response, status_code = get_actor_with_movies_logic(name)
     return jsonify(response), status_code
 
 
 @app.route("/entity/director/<string:name>", methods=["GET"])
+@cross_origin()
 def get_director_with_movies(name):
     response, status_code = get_director_with_movies_logic(name)
     return jsonify(response), status_code
 
 
 @app.route("/entity/genre/<string:name>", methods=["GET"])
+@cross_origin()
 def get_genre_with_movies(name):
     response, status_code = get_genre_with_movies_logic(name)
     return jsonify(response), status_code
 
 
 @app.route("/search/actors", methods=["GET"])
+@cross_origin()
 def get_search_actors():
     return search_entities("ACTORS")
 
 @app.route("/search/directors", methods=["GET"])
+@cross_origin()
 def get_search_directors():
     return search_entities("DIRECTORS")
 
 @app.route("/search/users", methods=["GET"])
 @token_required
+@cross_origin()
 def get_search_users():
     return search_entities("USERS")
 
 @app.route("/search/movies", methods=["GET"])
+@cross_origin()
 def get_search_movies():
     return search_entities("MOVIES")
 
