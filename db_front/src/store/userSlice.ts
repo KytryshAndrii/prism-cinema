@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type tUserState = {
   id: string | null;
@@ -10,7 +10,7 @@ type tUserState = {
   isUserSubscribed: boolean;
   isUserAdmin: boolean;
   isLoggedIn: boolean;
-}
+};
 
 const initialState: tUserState = {
   id: null,
@@ -25,21 +25,15 @@ const initialState: tUserState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
-    logIn: (
-      _,
-      action: PayloadAction<tUserState>
-    ) => {
-        return { ...action.payload };
+    logIn: (_, action: PayloadAction<tUserState>) => {
+      return { ...action.payload };
     },
     logOut: () => initialState,
-    
-    updateUser: (
-      state,
-      action: PayloadAction<{ login?: string; email?: string }>
-    ) => {
+
+    updateUser: (state, action: PayloadAction<{ login?: string; email?: string }>) => {
       if (action.payload.login) {
         state.login = action.payload.login;
       }
@@ -48,11 +42,11 @@ const userSlice = createSlice({
       }
     },
 
-    subscribe:  (state) => {
+    subscribe: state => {
       state.isUserSubscribed = true;
     },
 
-    unsubscribe:  (state) => {
+    unsubscribe: state => {
       state.isUserSubscribed = false;
     },
   },

@@ -1,17 +1,16 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerFormSchema} from "../../../schemas/authSchemas";
-import { useRegisterUserMutation, useSubscribeToPlanMutation } from "../../../api/authApi";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logIn, subscribe } from "../../../store/userSlice";
-import { useState } from "react";
-import { useAuthForms } from "../../../context/AuthFormContext";
-import { getRegionFromLocale } from "../../../utils/utils";
-import type { tRegisterForm } from "../../../types/authTypes";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerFormSchema } from '../../../schemas/authSchemas';
+import { useRegisterUserMutation, useSubscribeToPlanMutation } from '../../../api/authApi';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logIn, subscribe } from '../../../store/userSlice';
+import { useState } from 'react';
+import { useAuthForms } from '../../../context/AuthFormContext';
+import { getRegionFromLocale } from '../../../utils/utils';
+import type { tRegisterForm } from '../../../types/authTypes';
 
 export const useSignUpModal = (onClose: () => void) => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,14 +25,14 @@ export const useSignUpModal = (onClose: () => void) => {
     formState: { errors },
   } = useForm<tRegisterForm>({
     resolver: zodResolver(registerFormSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
   });
 
-   const onSubmit = async (formData: tRegisterForm) => {
-    setErrorMessage(null); 
+  const onSubmit = async (formData: tRegisterForm) => {
+    setErrorMessage(null);
     const region = getRegionFromLocale();
     try {
-      const result = await registerUser({...formData, region}).unwrap();
+      const result = await registerUser({ ...formData, region }).unwrap();
 
       dispatch(
         logIn({
@@ -53,32 +52,31 @@ export const useSignUpModal = (onClose: () => void) => {
         try {
           await subscribeToPlan({
             user_id: result.id,
-            plan_id: pendingPlanId
+            plan_id: pendingPlanId,
           }).unwrap();
 
           dispatch(subscribe());
           setPendingPlanId(null);
         } catch {
-          console.error("Auto subscription failed");
+          console.error('Auto subscription failed');
         }
       }
 
-
       onClose();
-      navigate("/films");
+      navigate('/films');
     } catch (error: any) {
-       if (error?.status === 409) {
-        setErrorMessage("User already exists. You can log in instead.");
-        throw new Error("User already exists");
+      if (error?.status === 409) {
+        setErrorMessage('User already exists. You can log in instead.');
+        throw new Error('User already exists');
       } else if (error?.status === 400) {
-        setErrorMessage("Invalid input data.");
-        throw new Error("Invalid input data");
+        setErrorMessage('Invalid input data.');
+        throw new Error('Invalid input data');
       } else if (error?.status === 500) {
-        setErrorMessage("Server error. Please try again later.");
-        throw new Error("Server error");
+        setErrorMessage('Server error. Please try again later.');
+        throw new Error('Server error');
       } else {
-        setErrorMessage("Unknown registration error.");
-        throw new Error("Unknown registration error");
+        setErrorMessage('Unknown registration error.');
+        throw new Error('Unknown registration error');
       }
     }
   };
@@ -89,6 +87,6 @@ export const useSignUpModal = (onClose: () => void) => {
     onSubmit,
     errors,
     isLoading,
-    errorMessage
+    errorMessage,
   };
 };

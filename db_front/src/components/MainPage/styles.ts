@@ -11,8 +11,7 @@ export const Container = styled(Box)({
   minHeight: '100vh',
   background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0) 100%)`,
   backdropFilter: 'blur(1rem)',
-  overflowY: "hidden"
-  
+  overflowY: 'hidden',
 });
 
 export const Heading = styled('h2')({
@@ -22,7 +21,7 @@ export const Heading = styled('h2')({
   backgroundColor: 'transparent',
   boxShadow: '0 0.125rem 0.625rem rgba(0, 0, 0, 0.5)',
   backdropFilter: 'blur(1.7rem)',
-  borderRadius: '0.5rem', 
+  borderRadius: '0.5rem',
   color: '#ffffff',
   marginBottom: '3rem',
   textAlign: 'center',
@@ -37,15 +36,15 @@ export const FilmsGrid = styled(Box)({
 });
 
 export const FilmCard = styled(Box)({
-  position: "relative",
-  cursor: "pointer",
-  borderRadius: "0.5rem",
-  overflow: "hidden",
-  backgroundColor: "#111",
-  boxShadow: "0 0.125rem 0.5rem rgba(0,0,0,0.5)",
-  transition: "transform 0.2s",
-  "&:hover": {
-    transform: "scale(1.05)",
+  position: 'relative',
+  cursor: 'pointer',
+  borderRadius: '0.5rem',
+  overflow: 'hidden',
+  backgroundColor: '#111',
+  boxShadow: '0 0.125rem 0.5rem rgba(0,0,0,0.5)',
+  transition: 'transform 0.2s',
+  '&:hover': {
+    transform: 'scale(1.05)',
   },
 });
 
@@ -56,7 +55,7 @@ export const FilmImage = styled('img')({
 });
 
 export const FilmInfo = styled(Box)({
-  height: "100%",
+  height: '100%',
   padding: '0.5rem',
   backgroundColor: '#222',
 });
@@ -67,19 +66,18 @@ export const FilmTitle = styled(Box)({
   fontWeight: 'bold',
 });
 
-
 export const LikeButtonOverlay = styled(Box)({
-  position: "absolute",
-  top: "67%",
-  left: "72%",
+  position: 'absolute',
+  top: '67%',
+  left: '72%',
   zIndex: 2,
-  backgroundColor: "rgba(0,0,0,0.5)",
-  borderRadius: "1rem",
-  padding: "0.5rem",
-  cursor: "pointer",
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  borderRadius: '1rem',
+  padding: '0.5rem',
+  cursor: 'pointer',
 });
 
 export const HeartLikeIcon = styled(HeartIcon)({
-  color: "#e53935",
-  fontSize: "2rem",
+  color: '#e53935',
+  fontSize: '2rem',
 });

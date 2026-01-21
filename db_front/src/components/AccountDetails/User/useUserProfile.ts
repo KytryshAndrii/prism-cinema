@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppState } from "../../../store/store";
-import { useUpdateUserProfileMutation } from "../../../api/authApi";
-import { updateUser } from "../../../store/userSlice";
-import type { tFormValues } from "./types";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppState } from '../../../store/store';
+import { useUpdateUserProfileMutation } from '../../../api/authApi';
+import { updateUser } from '../../../store/userSlice';
+import type { tFormValues } from './types';
 
 export const useUserProfile = ({
   isEditingLogin,
@@ -17,8 +17,7 @@ export const useUserProfile = ({
   const user = useSelector((state: AppState) => state.user);
   const dispatch = useDispatch();
 
-  const [updateUserProfile, { isLoading }] =
-    useUpdateUserProfileMutation();
+  const [updateUserProfile, { isLoading }] = useUpdateUserProfileMutation();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -32,17 +31,17 @@ export const useUserProfile = ({
 
     if (isEditingPassword) {
       if (!data.password || !data.confirmPassword) {
-        setErrorMsg("Password fields cannot be empty.");
+        setErrorMsg('Password fields cannot be empty.');
         return;
       }
       if (data.password !== data.confirmPassword) {
-        setErrorMsg("Passwords do not match.");
+        setErrorMsg('Passwords do not match.');
         return;
       }
     }
 
     if (!loginChanged && !emailChanged && !isEditingPassword) {
-      setErrorMsg("No changes detected.");
+      setErrorMsg('No changes detected.');
       return;
     }
 
@@ -61,22 +60,22 @@ export const useUserProfile = ({
         })
       );
 
-      setSuccessMsg("Profile updated successfully !");
+      setSuccessMsg('Profile updated successfully !');
     } catch (error: any) {
       const status = error?.status;
 
       if (status === 400) {
-        setErrorMsg("Invalid data. Please check fields.");
-        throw new Error("Invalid data. Please check fields.");
+        setErrorMsg('Invalid data. Please check fields.');
+        throw new Error('Invalid data. Please check fields.');
       } else if (status === 401) {
-        setErrorMsg("Session expired. Please log in again.");
-        throw new Error("Session expired. Please log in again.");
+        setErrorMsg('Session expired. Please log in again.');
+        throw new Error('Session expired. Please log in again.');
       } else if (status === 409) {
-        setErrorMsg("Login or email already exists.");
-        throw new Error("Login or email already exists.");
+        setErrorMsg('Login or email already exists.');
+        throw new Error('Login or email already exists.');
       } else {
-        setErrorMsg("Server error. Try again later.");
-        throw new Error("Server error. Try again later.");
+        setErrorMsg('Server error. Try again later.');
+        throw new Error('Server error. Try again later.');
       }
     }
   };

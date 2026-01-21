@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 * {
   padding: 0;
@@ -8,9 +8,9 @@
 
 :root {
   font-size: 16px;
-} 
+}
 
-#root{
+#root {
   display: flex;
   height: 100%;
   width: 100%;
@@ -20,13 +20,13 @@
 }
 
 .archivo-black-regular {
-  font-family: "Archivo Black", sans-serif;
+  font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
 body {
-  font-family: "Archivo Black", sans-serif;
+  font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-style: normal;
   display: flex;

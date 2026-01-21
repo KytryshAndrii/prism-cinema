@@ -9,24 +9,26 @@ import SubscriptionsPlans from './components/SubscriptionsPlans/SubscriptionsPla
 import { AuthFormsProvider } from './context/AuthFormContext';
 import UserProfile from './components/AccountDetails/User/UserProfile';
 import FavouritesMovies from './components/FavouritesMovies/FavouritesMovies';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 const App: React.FC = () => {
   return (
     <>
       <Background />
       <Router>
-      <AuthFormsProvider>
-       <NavBar/>
-       
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/films" element={<MainPage />} />
-          <Route path="/film_entity" element={<FilmDetails/>}/>
-          <Route path="/likes" element={<FavouritesMovies/>}/>
-          <Route path="/subscriptions" element={<SubscriptionsPlans/>}/>
-          <Route path="/profile" element={<UserProfile/>}/>
-        </Routes>
-      </AuthFormsProvider>
+        <AuthFormsProvider>
+          <NavBar />
+
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/films" element={<MainPage />} />
+            <Route path="/film_entity" element={<FilmDetails />} />
+            <Route path="/likes" element={<FavouritesMovies />} />
+            <Route path="/subscriptions" element={<SubscriptionsPlans />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/admin_panel" element={<AdminPanel />} />
+          </Routes>
+        </AuthFormsProvider>
       </Router>
     </>
   );

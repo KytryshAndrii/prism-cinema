@@ -1,5 +1,5 @@
-import type React from "react";
-import { useState } from "react";
+import type React from 'react';
+import { useState } from 'react';
 import {
   PageWrapper,
   BackdropWrapper,
@@ -25,28 +25,22 @@ import {
   RateStar,
   RatingWrapper,
   GeneralDataWrapper,
-} from "./styles";
-import { useFilmDetailsRender } from "./useFilmDetailsRender";
-import { Skeleton } from "@mui/material";
-import type { AppState } from "../../store/store";
-import { useSelector } from "react-redux";
-import { HeartIcon } from "../../icons/icons";
-import { useEntityModal, type EntityType } from "./EntityModal/useEntityModal";
-import EntityModal from "./EntityModal/EntityModal";
+} from './styles';
+import { useFilmDetailsRender } from './useFilmDetailsRender';
+import { Skeleton } from '@mui/material';
+import type { AppState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { HeartIcon } from '../../icons/icons';
+import { useEntityModal, type EntityType } from './EntityModal/useEntityModal';
+import EntityModal from './EntityModal/EntityModal';
 
 const FilmDetails: React.FC = () => {
-  const {movieMeta, toggleLikeMovie} = useFilmDetailsRender();
+  const { movieMeta, toggleLikeMovie } = useFilmDetailsRender();
   const user = useSelector((state: AppState) => state.user);
-  const [view, setView] = useState<"movie" | "trailer">("trailer");
-  const [activeTab, setActiveTab] = useState<EntityType>("cast");
+  const [view, setView] = useState<'movie' | 'trailer'>('trailer');
+  const [activeTab, setActiveTab] = useState<EntityType>('cast');
 
-  const {
-    open,
-    modalTitle,
-    entityData,
-    handleOpen,
-    handleClose,
-  } = useEntityModal();
+  const { open, modalTitle, entityData, handleOpen, handleClose } = useEntityModal();
 
   return (
     <PageWrapper>
@@ -56,12 +50,14 @@ const FilmDetails: React.FC = () => {
       </BackdropWrapper>
 
       <ContentWrapper>
-        <InfoGrid>  
-            <Poster src={movieMeta.poster!} />
+        <InfoGrid>
+          <Poster src={movieMeta.poster!} />
           <div>
             <Title>{movieMeta.title}</Title>
             <RowRating>
-              <RatingWrapper><RateStar/> <strong>{movieMeta.rating}/10</strong></RatingWrapper>
+              <RatingWrapper>
+                <RateStar /> <strong>{movieMeta.rating}/10</strong>
+              </RatingWrapper>
               <PgBadge pg={movieMeta.pg}>{movieMeta.pg}</PgBadge>
             </RowRating>
             {movieMeta.description ? (
@@ -71,52 +67,47 @@ const FilmDetails: React.FC = () => {
                   Release: <strong>{movieMeta.release_date}</strong>
                 </Description>
               </GeneralDataWrapper>
-              ): (
-              <Skeleton variant="text" width={300} height={50} sx={{ bgcolor: 'grey.900' }}/>
-              )
-            }
+            ) : (
+              <Skeleton variant="text" width={300} height={50} sx={{ bgcolor: 'grey.900' }} />
+            )}
 
             <ToggleRow>
-              <ToggleLabel
-                active={activeTab === "cast"}
-                onClick={() => setActiveTab("cast")}
-              >
+              <ToggleLabel active={activeTab === 'cast'} onClick={() => setActiveTab('cast')}>
                 CAST
               </ToggleLabel>
-              <ToggleLabel
-                active={activeTab === "genres"}
-                onClick={() => setActiveTab("genres")}
-              >
+              <ToggleLabel active={activeTab === 'genres'} onClick={() => setActiveTab('genres')}>
                 GENRES
               </ToggleLabel>
               <ToggleLabel
-                active={activeTab === "directors"}
-                onClick={() => setActiveTab("directors")}
+                active={activeTab === 'directors'}
+                onClick={() => setActiveTab('directors')}
               >
                 DIRECTORS
               </ToggleLabel>
             </ToggleRow>
 
             <ChipsRow>
-              {movieMeta.cast.length || movieMeta.description.length || movieMeta.directors.length ? 
-              (
-                <>{(activeTab === "cast" ? movieMeta.cast : activeTab === "directors" ? movieMeta.directors : movieMeta.genres).map(
-                (item) => (
-                  <Chip
-                    key={item}
-                    onClick={() => handleOpen(item, activeTab)}
-                    >
-                    {item}
-                  </Chip>
-                ))}
+              {movieMeta.cast.length ||
+              movieMeta.description.length ||
+              movieMeta.directors.length ? (
+                <>
+                  {(activeTab === 'cast'
+                    ? movieMeta.cast
+                    : activeTab === 'directors'
+                      ? movieMeta.directors
+                      : movieMeta.genres
+                  ).map(item => (
+                    <Chip key={item} onClick={() => handleOpen(item, activeTab)}>
+                      {item}
+                    </Chip>
+                  ))}
                 </>
-              ):(
-                <Skeleton variant="text" width={300} height={50} sx={{ bgcolor: 'grey.900' }}/>
-              )
-              }
+              ) : (
+                <Skeleton variant="text" width={300} height={50} sx={{ bgcolor: 'grey.900' }} />
+              )}
             </ChipsRow>
             <EntityModal
-              open={open}
+              open={open && !!entityData}
               onClose={handleClose}
               title={modalTitle}
               data={entityData}
@@ -124,7 +115,7 @@ const FilmDetails: React.FC = () => {
           </div>
         </InfoGrid>
         <TrailerWrapper>
-          {view === "trailer" || !user.isUserSubscribed ? (
+          {view === 'trailer' || !user.isUserSubscribed ? (
             movieMeta.trailerUrl ? (
               <iframe
                 src={movieMeta.trailerUrl}
@@ -132,47 +123,40 @@ const FilmDetails: React.FC = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
-                style={{ width: "100%", height: "100%", border: "none" }}
+                style={{ width: '100%', height: '100%', border: 'none' }}
               />
             ) : (
-              <Skeleton variant="text" sx={{ height: "100%", bgcolor: "grey.900" }} />
+              <Skeleton variant="text" sx={{ height: '100%', bgcolor: 'grey.900' }} />
             )
-            ) : (
-              <iframe
-                src="https://example.com/actual_movie.mp4"
-                title="Movie stream"
-                allowFullScreen
-                loading="lazy"
-                style={{ width: "100%", height: "100%", border: "none" }}
-              />
-            )}
+          ) : (
+            <iframe
+              src="https://example.com/actual_movie.mp4"
+              title="Movie stream"
+              allowFullScreen
+              loading="lazy"
+              style={{ width: '100%', height: '100%', border: 'none' }}
+            />
+          )}
         </TrailerWrapper>
         {user.isUserSubscribed && (
           <ActionsPanel>
             <LikeButton active={movieMeta.isLiked} onClick={toggleLikeMovie}>
               <HeartIcon />
-                Like
+              Like
             </LikeButton>
 
             <Underline />
 
             <ActionSwitch>
-              <ActionSwitchButton
-                active={view === "movie"}
-                onClick={() => setView("movie")}
-              >
+              <ActionSwitchButton active={view === 'movie'} onClick={() => setView('movie')}>
                 MOVIE
               </ActionSwitchButton>
-              <ActionSwitchButton
-                active={view === "trailer"}
-                onClick={() => setView("trailer")}
-              >
+              <ActionSwitchButton active={view === 'trailer'} onClick={() => setView('trailer')}>
                 TRAILER
               </ActionSwitchButton>
             </ActionSwitch>
           </ActionsPanel>
         )}
-
       </ContentWrapper>
     </PageWrapper>
   );

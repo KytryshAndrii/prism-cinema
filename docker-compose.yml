@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:17
+    container_name: prism_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ks_bd
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db_database/sql_backup_with_data.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./db_backend
+    container_name: prism_backend
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./db_backend:/app
+    environment:
+      FLASK_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ks_bd
+      DB_USER: postgres
+      DB_PASS: root
+
+  frontend:
+    build: ./db_front
+    container_name: prism_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:

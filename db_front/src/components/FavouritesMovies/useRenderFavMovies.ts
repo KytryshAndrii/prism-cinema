@@ -1,9 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useGetUserFavouriteMoviesQuery, useRemoveMovieFromFavouritesMutation } from "../../api/authApi";
-import type { AppState } from "../../store/store";
-import { useNavigate } from "react-router-dom";
-import { setFilm } from "../../store/filmSlice";
-import type { tFilmMetaData } from "../MainPage/types";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useGetUserFavouriteMoviesQuery,
+  useRemoveMovieFromFavouritesMutation,
+} from '../../api/authApi';
+import type { AppState } from '../../store/store';
+import { useNavigate } from 'react-router-dom';
+import { setFilm } from '../../store/filmSlice';
+import type { tFilmMetaData } from '../MainPage/types';
 
 export const useRenderFavMovies = () => {
   const userId = useSelector((state: AppState) => state.user.id);
@@ -18,7 +21,7 @@ export const useRenderFavMovies = () => {
 
   const handleFilmClick = (film: tFilmMetaData) => {
     dispatch(setFilm({ id: film.id, name: film.title }));
-    navigate("/film_entity");
+    navigate('/film_entity');
   };
 
   const handleRemoveFromFav = async (movieId: string) => {
@@ -26,12 +29,12 @@ export const useRenderFavMovies = () => {
       await removeFromFav({ user_id: userId!, movie_id: movieId }).unwrap();
       await refetch();
     } catch (err) {
-      console.error("Failed to remove from favourites", err);
+      console.error('Failed to remove from favourites', err);
     }
   };
 
   return {
-    films: (data || []).map((movie) => ({
+    films: (data || []).map(movie => ({
       id: movie.movie_id,
       title: movie.movie_name,
       imageUrl: `data:image/jpeg;base64,${movie.movie_poster}`,

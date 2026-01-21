@@ -1,5 +1,5 @@
 export type tFilmMetaData = {
-    id: string,
-    title: string,
-    imageUrl: string,
-}
+  id: string;
+  title: string;
+  imageUrl: string;
+};

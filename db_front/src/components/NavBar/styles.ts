@@ -1,10 +1,11 @@
 import { AppBar, Toolbar, InputBase, Button, Box } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import { AdminCutIcon } from '../../icons/icons';
 
 export const NavbarBox = styled(AppBar)(() => ({
   backgroundColor: 'transparent',
   boxShadow: '0 0.125rem 0.625rem rgba(0, 0, 0, 0.3)',
-  backdropFilter: 'blur(0.25rem)', 
+  backdropFilter: 'blur(0.25rem)',
   zIndex: 1000,
 }));
 
@@ -15,7 +16,6 @@ export const ToolbarStyled = styled(Toolbar)({
   padding: '0 2rem',
 });
 
-
 export const Brand = styled(Box)(() => ({
   fontSize: '1.4rem',
   fontWeight: 'bold',
@@ -23,7 +23,7 @@ export const Brand = styled(Box)(() => ({
   span: {
     color: '#EE131F',
   },
-  cursor: 'pointer'
+  cursor: 'pointer',
 }));
 
 export const NavButtons = styled(Box)({
@@ -33,27 +33,33 @@ export const NavButtons = styled(Box)({
 });
 
 export const UserAvatar = styled(Box)({
-  display:"flex",
+  display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: "1rem",
+  gap: '1rem',
   color: '#fff',
   fontSize: '1.2rem',
   fontWeight: 'bold',
-  cursor:"pointer"
-})
+  cursor: 'pointer',
+});
 
 export const BrandWithAvatarButtons = styled(Box)({
-  display:"flex",
+  display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'space-around',
   alignItems: 'center',
-  gap: "3rem"
-})
+  gap: '3rem',
+});
 
-export const SingleNavButton =  styled(Button)({
+export const SingleNavButton = styled(Button)({
   color: '#fff',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+});
+
+export const AdminNavButton = styled(Button)({
+  color: '#EE131F',
   fontSize: '1rem',
   fontWeight: 'bold',
 });
@@ -66,3 +72,13 @@ export const SearchInput = styled(InputBase)(() => ({
   border: '0.0625rem solid rgba(255,255,255,0.2)',
   fontSize: '0.9rem',
 }));
+
+export const AdminStyleWrapper = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+export const AdminCut = styled(AdminCutIcon)({
+  fontSize: '2.4rem',
+  color: '#EE131F',
+});
