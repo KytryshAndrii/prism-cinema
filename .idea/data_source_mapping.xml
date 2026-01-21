@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/db_backend/service/entities.py" value="bb934f42-f477-474b-9a84-8a59399ceb1c" />
-    <file url="file://$PROJECT_DIR$/db_backend/service/movies.py" value="bb934f42-f477-474b-9a84-8a59399ceb1c" />
-    <file url="file://$PROJECT_DIR$/db_backend/service/subscriptions.py" value="bb934f42-f477-474b-9a84-8a59399ceb1c" />
-    <file url="file://$PROJECT_DIR$/db_backend/service/user.py" value="bb934f42-f477-474b-9a84-8a59399ceb1c" />
-  </component>
-</project>
