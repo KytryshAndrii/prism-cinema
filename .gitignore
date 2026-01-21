@@ -9,7 +9,7 @@ env/
 
 # IDEs
 .idea/
-.vscode/
+#.vscode/
 
 # OS files
 .DS_Store
