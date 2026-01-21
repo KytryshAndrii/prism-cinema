@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
@@ -63,7 +65,6 @@ def delete_user(user_id):
     response, status_code = delete_user_logic(user_id)
     return jsonify(response), status_code
 
-
 @app.route("/users", methods=["GET"])
 @token_required
 @cross_origin()
@@ -73,7 +74,7 @@ def get_users():
 
 
 @app.route("/movies", methods=["GET"])
-# @token_required  # Uncomment if needed
+# @token_required
 @cross_origin()
 def get_movies():
     movies = get_movies_logic()
