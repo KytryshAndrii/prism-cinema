@@ -221,7 +221,7 @@ def delete_user_logic(user_id):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        cur.execute("""DELETE FROM "USERS" WHERE user_id = %s""", (user_id,))
+        cur.execute("""DELETE FROM "USERS" WHERE user_id = %s""", (str(user_id),))
         if cur.rowcount == 0:
             conn.rollback()
             return {"message": "User not found"}, 404

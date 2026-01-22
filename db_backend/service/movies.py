@@ -1,4 +1,5 @@
 import base64
+import json
 import uuid
 from utils.connection import get_connection
 
@@ -306,11 +307,14 @@ def add_movie_logic(data):
         """, (new_movie_id, movie_poster, movie_trailer,
               movie_language, movie_preview_poster))
 
-
         cur.execute("""
-            INSERT INTO "MOVIE_LOCALIZATIONS" (movie_id, subtitles_language, subtitles)
-            VALUES (%s, %s, %s)
-            """, (new_movie_id, movie_subtitles_language, movie_subtitles))
+                    INSERT INTO "MOVIE_LOCALIZATIONS" (movie_id, subtitles_language, subtitles)
+                    VALUES (%s, %s, %s)
+                    """, (
+                        new_movie_id,
+                        movie_subtitles_language,
+                        json.dumps(movie_subtitles)
+                    ))
 
         cur.execute("""
                     INSERT INTO "MOVIE_LICENSES" (movie_id, license_id)
@@ -370,10 +374,8 @@ def update_movie_logic(movie_id, data):
 
 
 def update_movie_actors_logic(movie_id, data):
-    """
-    Syncs the MOVIE_ACTORS table to match the provided actor_ids list.
-    Only adds/removes relations without touching unrelated actors.
-    """
+    movie_id_str = str(movie_id)
+
     new_actor_ids = set(filter(None, (data.get("actor_ids") or "").split(";")))
     if not new_actor_ids:
         return {"message": "No actors provided"}, 400
@@ -381,19 +383,17 @@ def update_movie_actors_logic(movie_id, data):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        # Get current actors
-        cur.execute("""SELECT actor_id FROM "MOVIE_ACTORS" WHERE movie_id = %s""", (movie_id,))
+        cur.execute("""SELECT actor_id FROM "MOVIE_ACTORS" WHERE movie_id = %s""", (movie_id_str,))
         existing_actor_ids = set(row[0] for row in cur.fetchall())
 
-        # Compute actors to add/remove
         to_add = new_actor_ids - existing_actor_ids
         to_remove = existing_actor_ids - new_actor_ids
 
         for actor_id in to_add:
-            cur.execute("""INSERT INTO "MOVIE_ACTORS" (movie_id, actor_id) VALUES (%s, %s)""", (movie_id, actor_id))
+            cur.execute("""INSERT INTO "MOVIE_ACTORS" (movie_id, actor_id) VALUES (%s, %s)""", (movie_id_str, actor_id))
 
         for actor_id in to_remove:
-            cur.execute("""DELETE FROM "MOVIE_ACTORS" WHERE movie_id = %s AND actor_id = %s""", (movie_id, actor_id))
+            cur.execute("""DELETE FROM "MOVIE_ACTORS" WHERE movie_id = %s AND actor_id = %s""", (movie_id_str, actor_id))
 
         conn.commit()
         return {"message": "Movie actors updated"}, 200
@@ -405,7 +405,9 @@ def update_movie_actors_logic(movie_id, data):
         conn.close()
 
 
+
 def update_movie_directors_logic(movie_id, data):
+    movie_id_str = str(movie_id)
     new_director_ids = set(filter(None, (data.get("director_ids") or "").split(";")))
     if not new_director_ids:
         return {"message": "No directors provided"}, 400
@@ -413,16 +415,18 @@ def update_movie_directors_logic(movie_id, data):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        cur.execute("""SELECT director_id FROM "MOVIE_DIRECTORS" WHERE movie_id = %s""", (movie_id,))
+        cur.execute("""SELECT director_id FROM "MOVIE_DIRECTORS" WHERE movie_id = %s""", (movie_id_str,))
         existing_director_ids = set(row[0] for row in cur.fetchall())
 
         to_add = new_director_ids - existing_director_ids
         to_remove = existing_director_ids - new_director_ids
 
         for director_id in to_add:
-            cur.execute("""INSERT INTO "MOVIE_DIRECTORS" (movie_id, director_id) VALUES (%s, %s)""", (movie_id, director_id))
+            cur.execute("""INSERT INTO "MOVIE_DIRECTORS" (movie_id, director_id) VALUES (%s, %s)""",
+                        (movie_id_str, director_id))
         for director_id in to_remove:
-            cur.execute("""DELETE FROM "MOVIE_DIRECTORS" WHERE movie_id = %s AND director_id = %s""", (movie_id, director_id))
+            cur.execute("""DELETE FROM "MOVIE_DIRECTORS" WHERE movie_id = %s AND director_id = %s""",
+                        (movie_id_str, director_id))
 
         conn.commit()
         return {"message": "Movie directors updated"}, 200
@@ -434,7 +438,9 @@ def update_movie_directors_logic(movie_id, data):
         conn.close()
 
 
+
 def update_movie_genres_logic(movie_id, data):
+    movie_id_str = str(movie_id)
     new_genre_ids = set(filter(None, (data.get("genre_ids") or "").split(";")))
     if not new_genre_ids:
         return {"message": "No genres provided"}, 400
@@ -442,16 +448,18 @@ def update_movie_genres_logic(movie_id, data):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        cur.execute("""SELECT genre_id FROM "MOVIE_GENRES" WHERE movie_id = %s""", (movie_id,))
+        cur.execute("""SELECT genre_id FROM "MOVIE_GENRES" WHERE movie_id = %s""", (movie_id_str,))
         existing_genre_ids = set(row[0] for row in cur.fetchall())
 
         to_add = new_genre_ids - existing_genre_ids
         to_remove = existing_genre_ids - new_genre_ids
 
         for genre_id in to_add:
-            cur.execute("""INSERT INTO "MOVIE_GENRES" (movie_id, genre_id) VALUES (%s, %s)""", (movie_id, genre_id))
+            cur.execute("""INSERT INTO "MOVIE_GENRES" (movie_id, genre_id) VALUES (%s, %s)""",
+                        (movie_id_str, genre_id))
         for genre_id in to_remove:
-            cur.execute("""DELETE FROM "MOVIE_GENRES" WHERE movie_id = %s AND genre_id = %s""", (movie_id, genre_id))
+            cur.execute("""DELETE FROM "MOVIE_GENRES" WHERE movie_id = %s AND genre_id = %s""",
+                        (movie_id_str, genre_id))
 
         conn.commit()
         return {"message": "Movie genres updated"}, 200
@@ -463,7 +471,9 @@ def update_movie_genres_logic(movie_id, data):
         conn.close()
 
 
+
 def update_additional_movie_data_logic(movie_id, data):
+    movie_id_str = str(movie_id)  # convert UUID to string
     fields = {
         "movie_poster": data.get("movie_poster"),
         "movie_trailer": data.get("movie_trailer"),
@@ -477,7 +487,7 @@ def update_additional_movie_data_logic(movie_id, data):
 
     set_clause = ", ".join(f'{k} = %s' for k in fields_to_update.keys())
     values = list(fields_to_update.values())
-    values.append(movie_id)
+    values.append(movie_id_str)
 
     conn = get_connection()
     cur = conn.cursor()
@@ -497,11 +507,9 @@ def update_additional_movie_data_logic(movie_id, data):
         conn.close()
 
 
+
 def update_movie_localizations_logic(movie_id, data):
-    """
-    Syncs MOVIE_LOCALIZATIONS by subtitles_language.
-    Subtitles are stored as JSON/JSONB.
-    """
+    movie_id_str = str(movie_id)  # convert UUID to string
     localizations = data.get("localizations")
     if not localizations:
         return {"message": "No localizations provided"}, 400
@@ -515,7 +523,7 @@ def update_movie_localizations_logic(movie_id, data):
             SELECT subtitles_language
             FROM "MOVIE_LOCALIZATIONS"
             WHERE movie_id = %s
-        """, (movie_id,))
+        """, (movie_id_str,))
         existing_languages = {row[0] for row in cur.fetchall()}
 
         to_add = new_languages - existing_languages
@@ -529,9 +537,9 @@ def update_movie_localizations_logic(movie_id, data):
                     (movie_id, subtitles_language, subtitles)
                     VALUES (%s, %s, %s)
                 """, (
-                    movie_id,
+                    movie_id_str,
                     loc["subtitles_language"],
-                    loc["subtitles"]
+                    json.dumps(loc["subtitles"])  # convert dict to JSON
                 ))
 
         for loc in localizations:
@@ -541,8 +549,8 @@ def update_movie_localizations_logic(movie_id, data):
                     SET subtitles = %s
                     WHERE movie_id = %s AND subtitles_language = %s
                 """, (
-                    loc["subtitles"],
-                    movie_id,
+                    json.dumps(loc["subtitles"]),  # convert dict to JSON
+                    movie_id_str,
                     loc["subtitles_language"]
                 ))
 
@@ -550,7 +558,7 @@ def update_movie_localizations_logic(movie_id, data):
             cur.execute("""
                 DELETE FROM "MOVIE_LOCALIZATIONS"
                 WHERE movie_id = %s AND subtitles_language = %s
-            """, (movie_id, language))
+            """, (movie_id_str, language))
 
         conn.commit()
         return {"message": "Movie localizations updated"}, 200
@@ -567,6 +575,7 @@ def update_movie_licenses_logic(movie_id, data):
     """
     Syncs MOVIE_LICENSES table.
     """
+    movie_id_str = str(movie_id)  # convert UUID to string
     new_license_ids = set(filter(None, (data.get("license_ids") or "").split(";")))
     if not new_license_ids:
         return {"message": "No licenses provided"}, 400
@@ -574,27 +583,30 @@ def update_movie_licenses_logic(movie_id, data):
     conn = get_connection()
     cur = conn.cursor()
     try:
+        # Get existing licenses
         cur.execute("""
             SELECT license_id
             FROM "MOVIE_LICENSES"
             WHERE movie_id = %s
-        """, (movie_id,))
+        """, (movie_id_str,))
         existing_license_ids = {row[0] for row in cur.fetchall()}
 
         to_add = new_license_ids - existing_license_ids
         to_remove = existing_license_ids - new_license_ids
 
+        # Insert new licenses
         for license_id in to_add:
             cur.execute("""
                 INSERT INTO "MOVIE_LICENSES" (movie_id, license_id)
                 VALUES (%s, %s)
-            """, (movie_id, license_id))
+            """, (movie_id_str, str(license_id)))  # convert license_id if UUID
 
+        # Remove old licenses
         for license_id in to_remove:
             cur.execute("""
                 DELETE FROM "MOVIE_LICENSES"
                 WHERE movie_id = %s AND license_id = %s
-            """, (movie_id, license_id))
+            """, (movie_id_str, str(license_id)))  # convert license_id if UUID
 
         conn.commit()
         return {"message": "Movie licenses updated"}, 200
@@ -614,7 +626,7 @@ def delete_movie_logic(movie_id):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        cur.execute("""DELETE FROM "MOVIES" WHERE movie_id = %s""", (movie_id,))
+        cur.execute("""DELETE FROM "MOVIES" WHERE movie_id = %s""", (str(movie_id),))
 
         if cur.rowcount == 0:
             conn.rollback()
@@ -631,7 +643,6 @@ def delete_movie_logic(movie_id):
         conn.close()
 
 
-
 def get_movie_test_logic(movie_id):
     """
     Returns full movie info including actors, directors, and genres.
@@ -640,7 +651,6 @@ def get_movie_test_logic(movie_id):
     cur = conn.cursor()
 
     try:
-        # Main movie info
         cur.execute("""
             SELECT movie_id, movie_name, movie_rating, movie_release_date, movie_pg, movie_description
             FROM "MOVIES"
@@ -663,7 +673,6 @@ def get_movie_test_logic(movie_id):
             "genres": []
         }
 
-        # Actors
         cur.execute("""
             SELECT a.actor_id, a.first_name, a.middle_name, a.last_name
             FROM "MOVIE_ACTORS" ma
@@ -675,7 +684,6 @@ def get_movie_test_logic(movie_id):
             for r in cur.fetchall()
         ]
 
-        # Directors
         cur.execute("""
             SELECT d.director_id, d.first_name, d.middle_name, d.last_name
             FROM "MOVIE_DIRECTORS" md
@@ -687,7 +695,6 @@ def get_movie_test_logic(movie_id):
             for r in cur.fetchall()
         ]
 
-        # Genres
         cur.execute("""
             SELECT g.genre_id, g.genre_name
             FROM "MOVIE_GENRES" mg
