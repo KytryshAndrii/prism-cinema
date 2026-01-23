@@ -1,27 +1,83 @@
 import React from 'react';
-import { Typography, IconButton } from '@mui/material';
-import { SearchBar, MovieItem, MovieList, TrashBin } from './styles';
+import { Typography, IconButton, Modal, Button, Alert } from '@mui/material';
+import {
+  SearchBar,
+  MovieItem,
+  MovieList,
+  TrashBin,
+  ModalBox,
+} from './styles';
 import { FormWrapper } from '../styles';
+import { useDeleteMovie } from './useDeleteMovie';
 
 export const DeleteMovie: React.FC = () => {
-  // Mock data (later from API)
-  const movies = ['Kill Bill: Vol. 1', 'Kill the Irishman', 'Kill Me Three Times'];
+  const {
+    movies,
+    searchPhrase,
+    handleSearchChange,
+    openDeleteModal,
+    confirmDelete,
+    cancelDelete,
+    movieToDelete,
+    alert,
+    closeAlert,
+    isDeleting,
+    isLoading,
+  } = useDeleteMovie();
 
   return (
     <FormWrapper>
       <Typography variant="h5">DELETE MOVIE</Typography>
-      <SearchBar placeholder="Search movie..." />
+
+      {alert && (
+        <Alert severity={alert.type} onClose={closeAlert}>
+          {alert.message}
+        </Alert>
+      )}
+
+      <SearchBar
+        placeholder="Search movie..."
+        value={searchPhrase}
+        onChange={e => handleSearchChange(e.target.value)}
+      />
 
       <MovieList>
-        {movies.map(movie => (
-          <MovieItem key={movie}>
-            <Typography variant="body1">{movie}</Typography>
-            <IconButton>
-              <TrashBin />
-            </IconButton>
-          </MovieItem>
-        ))}
+        {isLoading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          movies.map(movie => (
+            <MovieItem key={movie.movie_id}>
+              <Typography>{movie.movie_name}</Typography>
+              <IconButton onClick={() => openDeleteModal(movie)}>
+                <TrashBin />
+              </IconButton>
+            </MovieItem>
+          ))
+        )}
       </MovieList>
+
+      <Modal open={!!movieToDelete} onClose={cancelDelete}>
+        <ModalBox>
+          <Typography>
+            Are you sure you want to delete{' '}
+            <strong>{movieToDelete?.movie_name}</strong>?
+          </Typography>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={confirmDelete}
+              disabled={isDeleting}
+            >
+              DELETE
+            </Button>
+            <Button variant="outlined" onClick={cancelDelete}>
+              CANCEL
+            </Button>
+          </div>
+        </ModalBox>
+      </Modal>
     </FormWrapper>
   );
 };

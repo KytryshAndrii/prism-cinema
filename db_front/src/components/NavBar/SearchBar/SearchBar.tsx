@@ -6,6 +6,7 @@ import { useSearchMoviesQuery } from '../../../api/authApi';
 import { setFilm } from '../../../store/filmSlice';
 import { SearchInput } from '../styles';
 import { SearchResultItem, SearchResults, SearchWrapper } from './styles';
+import type { tMovieResponse } from '../../../types/authTypes';
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -20,11 +21,11 @@ const SearchBar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleClick = (film: { id: string; name: string }) => {
+  const handleClick = (film: tMovieResponse) => {
     dispatch(
       setFilm({
-        id: film.id,
-        name: film.name,
+        id: film.movie_id,
+        name: film.movie_name,
       })
     );
     setQuery('');
@@ -50,8 +51,8 @@ const SearchBar: React.FC = () => {
       {isFocused && query.trim() !== '' && data && data.length > 0 && (
         <SearchResults>
           {data.map(film => (
-            <SearchResultItem key={film.id} onClick={() => handleClick(film)}>
-              {film.name}
+            <SearchResultItem key={film.movie_id} onClick={() => handleClick(film)}>
+              {film.movie_name}
             </SearchResultItem>
           ))}
         </SearchResults>

@@ -96,6 +96,7 @@ export const SaveButton = styled(Button)(() => ({
   fontWeight: 700,
   borderRadius: '0.5rem',
   backgroundColor: '#16a34a',
+  color: 'white',
 
   '&:hover': {
     backgroundColor: '#15803d',
@@ -103,7 +104,6 @@ export const SaveButton = styled(Button)(() => ({
 
   '&:disabled': {
     backgroundColor: '#374151',
-    color: '#9ca3af',
   },
 }));
 

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type {
+  tAddMovieRequest,
   tAuthResponse,
   tEntityResponse,
   tFavMovieRequest,
@@ -8,9 +9,10 @@ import type {
   tMovieResponse,
   tRegisterRequest,
   tRootState,
-  tSearchMoviesResponse,
+  tSearchEntityResponse,
   tSubscriptionsPlansResponse,
   tUpdateUserDataResponse,
+  tUserListResponse,
   tUserSubscriptionPlanMetaDataResponse,
   tUserToPlanSubscriptionRequest,
 } from '../types/authTypes';
@@ -27,6 +29,8 @@ export const authApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Users', 'Movies'],
+
 
   endpoints: builder => ({
     registerUser: builder.mutation<tAuthResponse, tRegisterRequest>({
@@ -62,11 +66,18 @@ export const authApi = createApi({
       }),
     }),
 
-    searchMovies: builder.query<tSearchMoviesResponse, string>({
+    searchMovies: builder.query<tMovieResponse[], string>({
       query: query => ({
         url: `/search/movies?query=${encodeURIComponent(query)}`,
         method: 'GET',
       }),
+       transformResponse: (response: { id: string; name: string }[]) =>
+        response.map(movie => ({
+        movie_id: movie.id,
+        movie_name: movie.name,
+        movie_poster: '', 
+    })),
+      providesTags: ['Movies'],
     }),
 
     getMovies: builder.query<tMovieResponse[], void>({
@@ -74,6 +85,7 @@ export const authApi = createApi({
         url: '/movies',
         method: 'GET',
       }),
+      providesTags: ['Movies'],
     }),
 
     getMovieDetails: builder.query<tMovieDetailsResponse, string>({
@@ -158,6 +170,60 @@ export const authApi = createApi({
     getGenreEntity: builder.query<tEntityResponse, string>({
       query: name => `/entity/genre/${encodeURIComponent(name)}`,
     }),
+
+    getUsers: builder.query<tUserListResponse, void>({
+      query: () =>({
+        url: `/users`,
+        method: 'GET',
+        
+      }),
+      providesTags: ['Users'],
+    }),
+    
+    deleteUser: builder.mutation<{ success: boolean }, string>({
+      query: userId => ({
+        url: `/delete/user/${userId}`,
+        method: 'DELETE',
+      }),
+       invalidatesTags: ['Users'],
+    }),
+    
+    searchUsers: builder.query<tUserListResponse, string>({
+      query: phrase => `/search/users?query=${encodeURIComponent(phrase)}`,
+      providesTags: ['Users'],
+    }),
+
+    deleteMovie: builder.mutation<void, string>({
+      query: movieId => ({
+      url: `/delete/movie/${movieId}`,
+      method: 'DELETE',
+      }),
+      invalidatesTags: ['Movies'],
+    }),
+
+    addMovie: builder.mutation<{ movie_id: string }, tAddMovieRequest>({
+      query: body => ({
+        url: '/add/movies',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: ['Movies'],
+    }),
+
+    searchActors: builder.query<tSearchEntityResponse[], string>({
+      query: phrase => `/search/actors?query=${encodeURIComponent(phrase)}`,
+    }),
+
+    searchDirectors: builder.query<tSearchEntityResponse[], string>({
+      query: phrase => `/search/directors?query=${encodeURIComponent(phrase)}`,
+    }),
+
+    searchGenres: builder.query<tSearchEntityResponse[], string>({
+      query: phrase => `/search/genres?query=${encodeURIComponent(phrase)}`,
+    }),
   }),
 });
 
@@ -179,4 +245,12 @@ export const {
   useGetActorEntityQuery,
   useGetDirectorEntityQuery,
   useGetGenreEntityQuery,
+  useGetUsersQuery,
+  useDeleteUserMutation,
+  useSearchUsersQuery,
+  useDeleteMovieMutation,
+  useAddMovieMutation,
+  useSearchActorsQuery,
+  useSearchDirectorsQuery,
+  useSearchGenresQuery,
 } = authApi;

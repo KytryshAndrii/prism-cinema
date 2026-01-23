@@ -63,7 +63,7 @@ def search_entities(table_name):
             """, (f"%{query}%", limit))
 
             rows = cur.fetchall()
-            result = [{"id": row[0], "name": row[1]} for row in rows]
+            result = [{"id": row[0], "login": row[1]} for row in rows]
 
     finally:
         cur.close()

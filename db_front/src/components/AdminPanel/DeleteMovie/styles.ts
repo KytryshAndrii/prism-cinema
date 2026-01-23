@@ -30,3 +30,15 @@ export const MovieItem = styled(Box)(() => ({
 export const TrashBin = styled(TrashBinIcon)({
   color: 'white',
 });
+
+export const ModalBox = styled(Box)({
+  backgroundColor: '#121212',
+  padding: '1.5rem',
+  color: 'white',
+  borderRadius: '1rem',
+  width: '19rem',
+  margin: '20vh auto',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+});

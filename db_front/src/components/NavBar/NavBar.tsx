@@ -49,7 +49,7 @@ const NavBar: React.FC = () => {
           {isLoggedIn ? (
             <NavButtons>
               <SingleNavButton onClick={() => navigate('/likes')}>LIKES</SingleNavButton>
-              <SingleNavButton onClick={() => navigate('/films')}>FILMS</SingleNavButton>
+              <SingleNavButton onClick={() => navigate('/films')}>MOVIES</SingleNavButton>
               {isUserAdmin ? (
                 <AdminNavButton onClick={() => navigate('/admin_panel')}>ADMIN</AdminNavButton>
               ) : (
@@ -63,7 +63,7 @@ const NavBar: React.FC = () => {
             <NavButtons>
               <SingleNavButton onClick={toggleSignInForm}>SIGN IN</SingleNavButton>
               <SingleNavButton onClick={toggleSignUpForm}>CREATE ACCOUNT</SingleNavButton>
-              <SingleNavButton onClick={() => navigate('/films')}>FILMS</SingleNavButton>
+              <SingleNavButton onClick={() => navigate('/films')}>MOVIES</SingleNavButton>
               <SingleNavButton onClick={() => navigate('/subscriptions')}>
                 SUBSCRIPTIONS
               </SingleNavButton>

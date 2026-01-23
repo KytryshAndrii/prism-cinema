@@ -57,7 +57,7 @@ export const useFilmDetailsRender = () => {
     const match = url.match(/v=([^&]+)/);
     return match ? `https://www.youtube.com/embed/${match[1]}` : url;
   };
-
+    
   const createImg = (img: string | null) => {
     return img ? `data:image/jpeg;base64,${img}` : undefined;
   };

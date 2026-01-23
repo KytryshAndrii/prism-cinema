@@ -96,3 +96,15 @@ export const entityResponseSchema = z.object({
   description: z.string().optional(),
   movies: movieEnitySchema.array(),
 });
+
+export const userSchema = z.object({
+  id: z.string(),
+  login: z.string(),
+  email: z.string(),
+  isAdmin: z.boolean(),
+  isSubscribed: z.boolean(),
+  region: z.string(),
+  dateOfBirth: z.string().nullable(),
+});
+
+export const userListSchema = z.array(userSchema);
