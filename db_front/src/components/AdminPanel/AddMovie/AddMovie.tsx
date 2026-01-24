@@ -58,10 +58,6 @@ export const AddMovie: React.FC = () => {
     skip: genreSearch.length < 1,
   });
 
-  // ===========================
-  // Helpers — map IDs -> objects
-  // ===========================
-
   const selectedActors = actorIds
     .map(id => actors.find(a => a.id === id))
     .filter((x): x is tSearchEntityResponse => Boolean(x));
@@ -74,9 +70,6 @@ export const AddMovie: React.FC = () => {
     .map(id => genres.find(g => g.id === id))
     .filter((x): x is tSearchEntityResponse => Boolean(x));
 
-  // ===========================
-  // UI
-  // ===========================
 
   return (
     <Wrapper>
