@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
-from search_entities import search_entities
-from token_validation import token_required
+from utils.search_entities import search_entities
+from utils.token_validation import token_required
 from service.users import (register_user_logic, login_user_logic,
                            update_user_profile_logic, get_users_logic,
                            delete_user_logic, )

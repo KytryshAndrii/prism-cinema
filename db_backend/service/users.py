@@ -1,7 +1,7 @@
 import bcrypt
 import uuid
 from utils.connection import get_connection
-from auth_utils import generate_token
+from utils.authorization import generate_token
 
 
 def register_user_logic(data):
