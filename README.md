@@ -95,7 +95,7 @@ Key entities include:
 
 ## Database Schema Overview
 
-![Database Schema](readme_imgs/database_schema.png)
+![Database Schema](docs/images/database_schema.png)
 
 ### Core Tables
 
@@ -225,13 +225,15 @@ Database access is handled via **psycopg2**.
 
 ```
 prism-cinema/
-├── db_backend/
-├── db_database/
-├── db_dummy_data_import/
-├── db_front/
-├── db_tests/
-├── posters/
-├── preview_posters/
+├── backend/                 # Flask API
+├── frontend/                # React + TypeScript client
+├── database/
+│   ├── sql_backup_with_data.sql
+│   ├── seed/                # dummy data generators
+│   │   └── assets/          # posters and preview images
+│   └── tests/               # performance and permission tests
+├── docs/
+│   └── images/              # README screenshots
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -265,45 +267,45 @@ An unauthenticated user has access to basic views that allow exploration of the 
 
 **Main application screen:**
 
-![Main application screen for unauthenticated users](readme_imgs/homepage.png)
+![Main application screen for unauthenticated users](docs/images/homepage.png)
 
 **List of available movies:**
 
-![List of movies available without logging in](readme_imgs/available_movies_no_login.png)
+![List of movies available without logging in](docs/images/available_movies_no_login.png)
 
 **Movie search view:**
 
-![Movie search view](readme_imgs/movie_search.png)
+![Movie search view](docs/images/movie_search.png)
 
 Unauthenticated users can view detailed movie information but cannot access interactive features.
 
-![Movie details page for unauthenticated users](readme_imgs/movie_info_logged_out.png)
+![Movie details page for unauthenticated users](docs/images/movie_info_logged_out.png)
 
-![Movie trailer view for unauthenticated users](readme_imgs/movie_trailer_logged_out.png)
+![Movie trailer view for unauthenticated users](docs/images/movie_trailer_logged_out.png)
 
 Additional movie-related information:
 
-![Actors appearing in the movie](readme_imgs/movie_info_actors.png)
+![Actors appearing in the movie](docs/images/movie_info_actors.png)
 
-![Movie genres](readme_imgs/movie_info_genres.png)
+![Movie genres](docs/images/movie_info_genres.png)
 
-![Movie directors](readme_imgs/movie_info_directors.png)
+![Movie directors](docs/images/movie_info_directors.png)
 
 Detailed pages are also available for actors, directors, and genres:
 
-![Actor information page](readme_imgs/actor_info.png)
+![Actor information page](docs/images/actor_info.png)
 
-![Genre information page](readme_imgs/genre_info.png)
+![Genre information page](docs/images/genre_info.png)
 
-![Director information page](readme_imgs/director_info.png)
+![Director information page](docs/images/director_info.png)
 
 **Available subscription plans:**
 
-![Available subscription plans](readme_imgs/subscriptions_list.png)
+![Available subscription plans](docs/images/subscriptions_list.png)
 
 **Login panel:**
 
-![Login panel](readme_imgs/sign_in.png)
+![Login panel](docs/images/sign_in.png)
 
 ---
 
@@ -313,25 +315,25 @@ After logging in, a user with a free subscription plan gains access to the user 
 
 **Application view after login:**
 
-![Application view after user login](readme_imgs/logged_in_user.png)
+![Application view after user login](docs/images/logged_in_user.png)
 
 **Default free subscription plan:**
 
-![Default free subscription plan](readme_imgs/default_free_subscription.png)
+![Default free subscription plan](docs/images/default_free_subscription.png)
 
 **User account menu:**
 
-![User menu after login](readme_imgs/user_menu_small.png)
+![User menu after login](docs/images/user_menu_small.png)
 
 **User profile panel:**
 
-![User profile panel](readme_imgs/profile_page.png)
+![User profile panel](docs/images/profile_page.png)
 
 Users with a free subscription plan can browse movies but cannot like movies or play full content.
 
-![Movie page for a free subscription user](readme_imgs/movie_page_free_plan.png)
+![Movie page for a free subscription user](docs/images/movie_page_free_plan.png)
 
-![Movie trailer view under free subscription](readme_imgs/movie_page_free_plan_2_(trailer_part).png)
+![Movie trailer view under free subscription](docs/images/movie_page_free_plan_2_(trailer_part).png)
 
 ---
 
@@ -341,11 +343,11 @@ Users with an active paid subscription have full access to platform functionalit
 
 **Movie page with liking enabled:**
 
-![Movie page with enabled liking functionality](readme_imgs/subscription_user_film_page_look_with_ability_to_like.png)
+![Movie page with enabled liking functionality](docs/images/subscription_user_film_page_look_with_ability_to_like.png)
 
 **List of liked movies:**
 
-![List of liked movies](readme_imgs/liked_movies.png)
+![List of liked movies](docs/images/liked_movies.png)
 
 ---
 
@@ -372,15 +374,15 @@ Below are selected views of the administrative panel used for managing system co
 
 **Adding a new movie:**
 
-![Administrator panel – adding a new movie](readme_imgs/add_movie.jpg)
+![Administrator panel – adding a new movie](docs/images/add_movie.jpg)
 
 **Editing movie data:**
 
-![Administrator panel – editing movie data](readme_imgs/edit_movie.jpg)
+![Administrator panel – editing movie data](docs/images/edit_movie.jpg)
 
 **Deleting a movie:**
 
-![Administrator panel – deleting a movie](readme_imgs/delete_movie.jpg)
+![Administrator panel – deleting a movie](docs/images/delete_movie.jpg)
 
 
 ---
