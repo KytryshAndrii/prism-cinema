@@ -2,23 +2,26 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
 .venv/
 venv/
 env/
 
+# Node
+node_modules/
+dist/
+
 # IDEs
 .idea/
-#.vscode/
+.vscode/
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Environment variables
-.venv
+# Environment variables (commit only the examples)
 .env
 .env.*
+!.env.example
 
 # Logs
 *.log
