@@ -228,8 +228,9 @@ prism-cinema/
 ├── backend/                 # Flask API
 ├── frontend/                # React + TypeScript client
 ├── database/
-│   ├── sql_backup_with_data.sql
-│   ├── seed/                # dummy data generators
+│   ├── schema.sql           # tables, views, triggers, indexes
+│   ├── seed/
+│   │   ├── seed.sql         # demo movies and accounts
 │   │   └── assets/          # posters and preview images
 │   └── tests/               # performance and permission tests
 ├── docs/
